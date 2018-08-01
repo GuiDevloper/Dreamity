@@ -1,0 +1,59 @@
+/* Profile styles */
+#background {
+  background-color: #404040;
+  width: 100%;
+  height: 100vh;
+}
+
+#header {
+  height: 50vh;
+  width: 90%;
+  margin: 5%;
+  background: url('../../assets/svg/back-profile.svg') no-repeat;
+  background-color: aliceblue;
+  background-position: left -20vh center;
+  background-size: contain;
+  box-shadow: -10px 0px 20px 0px rgba(25, 28, 76, 0.8),
+    9px 3px 20px 0px rgba(113, 114, 128, 0.8);
+  position: absolute;
+  border-radius: 50px;
+}
+
+#avatar {
+  height: 15vh;
+  width: 15vh;
+  border-radius: 100%;
+  margin: 5vh 0 5vh 5vw;
+  background-color: aqua;
+  float: left;
+}
+
+#data {
+  padding: 5vh;
+  text-shadow: 0px 0px 5px white;
+  font-weight: bold;
+}
+
+#username {
+  padding: 2vh;
+  font-size: 2rem;
+  margin: 0;
+  text-align: justify;
+  float: left;
+}
+#line-info {
+  font-size: 1.1rem;
+  text-align: justify;
+  margin: 0;
+  float: left;
+  padding: 0 0 0 3vh;
+}
+#bio {
+  width: 60%;
+  padding-top: 7%;
+  font-size: 1.1rem;
+  text-align: justify;
+  margin: initial;
+  float: left;
+  margin-left: -10vh;
+}
