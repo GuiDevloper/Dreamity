@@ -16,6 +16,10 @@
 *.launch
 .settings/
 *.sublime-workspace
+.jshintrc
+.editorconfig
+tsconfig.json
+tslint.json
 
 # IDE - VSCode
 .vscode/*
@@ -37,3 +41,4 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+.gitignore
