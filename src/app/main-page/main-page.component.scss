@@ -1,0 +1,54 @@
+/* Main page styles */
+#main {
+  width: 100%;
+  margin: 0;
+  background-color: #424242;
+  padding-bottom: .5%;
+}
+
+#head {
+  width: inherit;
+  height: 30vh;
+  background-color: indigo;
+  color: white;
+  text-align: justify;
+  p {
+    margin: 0;
+    padding: 5%;
+  }
+  .title {
+    font-size: 2rem;
+    padding: 10vh 5% 0;
+  }
+  .subtitle {
+    font-size: 1rem;
+  }
+}
+
+#posts {
+  width: 70%;
+  padding-top: 1%;
+}
+
+.post {
+  background-color: darkcyan;
+  min-height: 20vh;
+  margin: 4%;
+  border-radius: 3px;
+  p {
+    text-align: justify;
+    margin: 0;
+    padding: 5%;
+  }
+  .author {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #171717;
+    padding-bottom: 0;
+  }
+  .postText {
+    font-size: 1rem;
+    padding-top: 2%;
+    color: white;
+  }
+}
