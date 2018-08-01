@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "git-build": "ng build --prod --output-path=dist --base-href 'https://guidevloper.github.io/Dreamity/';ngh --message='Builded to ghpages'"
   },
   "private": true,
   "dependencies": {
