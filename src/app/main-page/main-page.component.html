@@ -10,10 +10,11 @@
   </div>
   <div class="grid grid-pad">
     <div class="post c-7o12 m-1o1" *ngFor="let post of posts">
-      <div class="back"></div>
       <div class="blur"></div>
-      <p class="author"> {{post.author}} </p>
-      <p class="postText"> {{post.post}} </p>
+      <div class="text">
+        <p class="author"> {{post.author}} </p>
+        <p class="postText"> {{post.post}} </p>
+      </div>
     </div>
   </div>
   <app-footer></app-footer>
