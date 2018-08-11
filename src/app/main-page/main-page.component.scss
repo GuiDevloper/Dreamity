@@ -4,24 +4,23 @@
   margin: 0;
   background-color: #2e1015;
   padding-bottom: .5%;
+  color: white;
+  text-align: justify;
 }
 
 #head {
   width: inherit;
   height: 70vh;
   background: url(https://i.pinimg.com/564x/26/94/f8/2694f861b9e3fa5cf6f3f4a6bb19f7b5.jpg) center no-repeat;
-  color: white;
-  text-align: justify;
   position: fixed;
   background-size: cover;
   -webkit-mask-image: linear-gradient(to bottom, #000000, rgba(0, 0, 0, 0) 85%);
-  mask-image: linear-gradient(to bottom, #000000, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom, #000000, rgba(0, 0, 0, 0) 85%);
   p {
     padding: 2% 5%;
-    -webkit-filter: blur(0.8px) drop-shadow(0px 0px 30px rgba(255, 0, 0, 0.8));
-    filter: blur(0.8px) drop-shadow(0px 0px 30px rgba(255, 0, 0, 0.8));
-    color: #ff3333;
+    color: rgb(255, 66, 66);
     font-weight: bold;
+    text-shadow: 0px 0px 70px rgba(255, 0, 0, 0.8), 0px 0px 40px rgba(255, 0, 0, 0.9), 0px 0px 30px rgba(255, 0, 0, 1);
   }
   .title {
     font-size: 3rem;
@@ -43,10 +42,8 @@
   padding-right: 20px !important;
   .blur {
     background: url(https://i.pinimg.com/564x/26/94/f8/2694f861b9e3fa5cf6f3f4a6bb19f7b5.jpg);
-    height: 96%;
     position: absolute;
     background-position: center;
-    -webkit-filter: blur(5px);
     filter: blur(5px);
     top: 2.7%;
     right: 0.5%;
@@ -54,22 +51,19 @@
     left: 0.6%;
     margin: 0;
     background-size: cover;
+    height: 96%;
     width: 95%;
     max-width: 99%;
   }
   p {
-    text-align: justify;
     padding: 4%;
   }
   .text {
-    text-align: justify;
     position: relative;
-    background: #222222;
     background: rgba(66, 13, 13, 0.75);
-    border-radius: 2px;
+    border-radius: inherit;
     box-shadow: 5px 5px rgba(17, 17, 17, 0.8);
     min-height: inherit;
-    color: white;
   }
   .author {
     font-size: 1.3rem;
