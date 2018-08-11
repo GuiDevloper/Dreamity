@@ -2,16 +2,20 @@
 #main {
   width: 100%;
   margin: 0;
-  background-color: #424242;
+  background-color: #2e1015;
   padding-bottom: .5%;
 }
 
 #head {
   width: inherit;
-  height: 30vh;
-  background-color: #230f0f;
+  height: 70vh;
+  background: url(https://i.pinimg.com/564x/26/94/f8/2694f861b9e3fa5cf6f3f4a6bb19f7b5.jpg) center no-repeat;
   color: white;
   text-align: justify;
+  position: fixed;
+  background-size: cover;
+  -webkit-mask-image: linear-gradient(to bottom, #000000, rgba(0, 0, 0, 0) 85%);
+  mask-image: linear-gradient(to bottom, #000000, rgba(0, 0, 0, 0) 100%);
   p {
     padding: 5%;
   }
@@ -23,7 +27,9 @@
     font-size: 1rem;
   }
 }
-
+.grid {
+  padding-top: 40vh;
+}
 .post {
   min-height: 20vh;
   border-radius: 3px;
