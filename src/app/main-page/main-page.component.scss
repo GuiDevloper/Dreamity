@@ -17,14 +17,19 @@
   -webkit-mask-image: linear-gradient(to bottom, #000000, rgba(0, 0, 0, 0) 85%);
   mask-image: linear-gradient(to bottom, #000000, rgba(0, 0, 0, 0) 100%);
   p {
-    padding: 5%;
+    padding: 2% 5%;
+    -webkit-filter: blur(0.8px) drop-shadow(0px 0px 30px rgba(255, 0, 0, 0.8));
+    filter: blur(0.8px) drop-shadow(0px 0px 30px rgba(255, 0, 0, 0.8));
+    color: #ff3333;
+    font-weight: bold;
   }
   .title {
-    font-size: 2rem;
+    font-size: 3rem;
     padding: 10vh 5% 0;
+    animation: flicker 10s linear infinite;
   }
   .subtitle {
-    font-size: 1rem;
+    font-size: 1.4rem;
   }
 }
 .grid {
@@ -83,5 +88,131 @@
   }
   .blur {
     width: 100% !important;
+  }
+}
+
+@keyframes flicker {
+  from {
+    opacity: 1;
+  }
+
+  4% {
+    opacity: .9;
+  }
+
+  6% {
+    opacity: .85;
+  }
+
+  8% {
+    opacity: .95;
+  }
+
+  10% {
+    opacity: .90;
+  }
+
+  11% {
+    opacity: .922;
+  }
+
+  12% {
+    opacity: .9;
+  }
+
+  14% {
+    opacity: .95;
+  }
+
+  16% {
+    opacity: .98;
+  }
+
+  17% {
+    opacity: .9;
+  }
+
+  19% {
+    opacity: .93;
+  }
+
+  20% {
+    opacity: .99;
+  }
+
+  24% {
+    opacity: 1;
+  }
+
+  26% {
+    opacity: .94;
+  }
+
+  28% {
+    opacity: .98;
+  }
+
+  37% {
+    opacity: .93;
+  }
+
+  38% {
+    opacity: .5;
+  }
+
+  39% {
+    opacity: .96;
+  }
+
+  42% {
+    opacity: 1;
+  }
+
+  44% {
+    opacity: .97;
+  }
+
+  46% {
+    opacity: .94;
+  }
+
+  56% {
+    opacity: .9;
+  }
+
+  58% {
+    opacity: .9;
+  }
+
+  60% {
+    opacity: .99;
+  }
+
+  68% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: .9;
+  }
+
+  72% {
+    opacity: .95;
+  }
+
+  93% {
+    opacity: .93;
+  }
+
+  95% {
+    opacity: .95;
+  }
+
+  97% {
+    opacity: .93;
+  }
+
+  to {
+    opacity: 1;
   }
 }
