@@ -12,5 +12,5 @@ After that, can write their dreams in post style, being able to add background t
 
 ## Technologies
 
-The great use of [Angular](angular.io) framework is a knowledge increased in this development.
+The great use of [Angular](http://angular.io) framework is a knowledge increased in this development.
 The [SCSS](http://sass-lang.com/documentation/file.SCSS_FOR_SASS_USERS.html) is a preprocessor of CSS that i are using in almost all projects.
