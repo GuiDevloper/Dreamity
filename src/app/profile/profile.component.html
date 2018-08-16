@@ -5,6 +5,14 @@
       <p id="username">Welcome to my World - GuiDevloper</p>
       <p id="line-info">18 years old, Developer, work to passion</p>
       <p id="bio">Guilherme, aka GuiDevloper a pragmatic and passionate coder and sometimes designer, thats loves every moment creating and developing things, including himself.</p>
+      <div *ngIf="ngAuth.user | async as user; else showLogin">
+        <h1>Hello {{ user.displayName }}!</h1>
+        <button (click)="logout()">Sair</button>
+      </div>
+      <ng-template #showLogin>
+        <h1>Please login</h1>
+        <button (click)="login()">Entrar</button>
+      </ng-template>
     </div>
   </div>
 </div>
