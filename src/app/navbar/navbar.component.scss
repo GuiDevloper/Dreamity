@@ -12,6 +12,11 @@
     list-style-type: none;
     width: 25%;
     float: left;
+    text-shadow: 1px 1px 0px #F44336;
+    &:hover {
+      text-shadow: 1px 1px 0px #00BCD4;
+      cursor: pointer;
+    }
   }
   .active {
     color: yellow;
