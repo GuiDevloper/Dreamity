@@ -1,8 +1,10 @@
 <nav class="navbar">
-  <div></div>
   <ul>
-    <li *ngFor="let li of navli">
-      {{ li }}
-    </li>
+    <li routerLink="">Home</li>
+    <li routerLink="about">About</li>
+    <li *ngIf="navli[2].includes('Profile')" routerLink="profile">{{ navli[2] }}</li>
+    <li *ngIf="navli[3] == 'Log out'" (click)="Logout()">{{ navli[3] }}</li>
+    <li *ngIf="navli[2] == 'Log in'" routerLink="login">{{ navli[2] }}</li>
+    <li *ngIf="navli[3] == 'Sign in'" routerLink="login">{{ navli[3] }}</li>
   </ul>
 </nav>
