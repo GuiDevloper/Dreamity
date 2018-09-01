@@ -3,7 +3,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { auth } from 'firebase/app';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,21 +16,15 @@ export class ProfileComponent implements OnInit {
   constructor(
     db: AngularFireDatabase,
     public ngAuth: AngularFireAuth,
-    private ngZone: NgZone,
-    private router: Router
+    private User: UserService
   ) {
     this.users = db.object('/users/1/login').valueChanges();
   }
   login() {
     const git = new auth.GithubAuthProvider();
-    const rt = this.router;
-    const ngz = this.ngZone;
-    this.ngAuth.auth.signInWithPopup(git).then(function() {
-      ngz.run(() => {
-        rt.navigateByUrl('/');
-      });
-    });
+    this.User.logWith(git);
   }
+
   logout() {
     this.ngAuth.auth.signOut();
   }
