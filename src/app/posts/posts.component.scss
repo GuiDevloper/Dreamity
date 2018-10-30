@@ -1,0 +1,57 @@
+#posts {
+  margin-top: 60vh;
+  display: inline-block;
+  color: white;
+  text-align: justify;
+}
+
+.post {
+  min-height: 20vh;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  position: relative;
+  padding-right: 20px !important;
+  .blur {
+    background: url(https://i.pinimg.com/564x/26/94/f8/2694f861b9e3fa5cf6f3f4a6bb19f7b5.jpg);
+    position: absolute;
+    background-position: center;
+    filter: blur(5px);
+    top: 2.7%;
+    right: 0.5%;
+    bottom: 5%;
+    left: 0.6%;
+    margin: 0;
+    background-size: cover;
+    height: 96%;
+    width: 95%;
+    max-width: 99%;
+  }
+  p {
+    padding: 4%;
+  }
+  .text {
+    position: relative;
+    background: rgba(66, 13, 13, 0.75);
+    border-radius: inherit;
+    box-shadow: 5px 5px rgba(17, 17, 17, 0.8);
+    min-height: inherit;
+  }
+  .author {
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding-bottom: 0;
+  }
+  .postText {
+    font-size: 1rem;
+    padding-top: 2%;
+  }
+}
+
+@media handheld, only screen and (max-width: 767px) {
+  .post {
+    padding-right: 0px !important;
+  }
+  .blur {
+    width: 100% !important;
+  }
+}
