@@ -8,14 +8,6 @@
       - Don't let your dreams be dreams
     </p>
   </div>
-  <div class="grid grid-pad">
-    <div class="post c-7o12 m-1o1" *ngFor="let post of posts">
-      <div class="blur"></div>
-      <div class="text">
-        <p class="author"> {{post.author}} </p>
-        <p class="postText"> {{post.post}} </p>
-      </div>
-    </div>
-  </div>
+  <app-posts></app-posts>
   <app-footer></app-footer>
 </div>
