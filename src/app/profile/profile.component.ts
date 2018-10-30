@@ -1,9 +1,9 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { auth } from 'firebase/app';
 import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -12,24 +12,27 @@ import { UserService } from '../user.service';
 })
 export class ProfileComponent implements OnInit {
   users: Observable<any>;
+  usua: any = null;
+  text = '';
+  profile: any;
 
   constructor(
-    db: AngularFireDatabase,
+    private db: AngularFireDatabase,
     public ngAuth: AngularFireAuth,
-    private User: UserService
-  ) {
-    this.users = db.object('/users/1/login').valueChanges();
-  }
-  login() {
-    const git = new auth.GithubAuthProvider();
-    this.User.logWith(git);
-  }
+    private User: UserService,
+    private route: ActivatedRoute
+  ) {}
 
   logout() {
     this.ngAuth.auth.signOut();
   }
 
   ngOnInit() {
+    this.usua = this.route.snapshot.paramMap.get('user');
+    this.db.object(`/profiles/${this.usua}`).valueChanges().subscribe(
+      pro => {
+        // obtendo profile de acordo com url
+        this.profile = pro;
+      });
   }
-
 }
