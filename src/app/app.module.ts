@@ -12,6 +12,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { LoginComponent } from './login/login.component';
+import { FormsModule } from '@angular/forms';
+import { PostsComponent } from './posts/posts.component';
 
 @NgModule({
   declarations: [
@@ -20,14 +22,16 @@ import { LoginComponent } from './login/login.component';
     NavbarComponent,
     FooterComponent,
     ProfileComponent,
-    LoginComponent
+    LoginComponent,
+    PostsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase, 'dreamity'),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
