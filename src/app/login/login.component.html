@@ -1,9 +1,31 @@
 <app-navbar></app-navbar>
 <div class="login">
-  <form>
-    <h2 *ngIf="userName">{{userName}}</h2>
-    <input name="email" type="email" placeholder="Insert email here">
-    <input name="password" type="password" placeholder="Insert password">
-    <button name="enter" (click)="login()">Enter</button>
-  </form>
+  <h2 *ngIf="user.isUserEmailLoggedIn">sim</h2>
+  <div *ngIf="!user.isUserEmailLoggedIn">
+    <p *ngIf="errorMessage.length > 0">
+      {{ errorMessage }}
+    </p>
+    <p *ngIf="error.message.length > 0">
+      {{ error.message }}
+    </p>
+    <form (ngSubmit)="onSignUp()" *ngIf="isNewUser">
+      <input name="username" type="text" placeholder="Username"
+        [(ngModel)]="username">
+      <input name="email" type="email" placeholder="Email"
+        [(ngModel)]="email">
+      <input name="password" type="password" placeholder="Password"
+        [(ngModel)]="password">
+      <button type="submit" name="enter">Sign In</button>
+      <h4 (click)="changeForm()">Already have an Account? >> Log In</h4>
+    </form>
+    <form (ngSubmit)="onLoginEmail()" *ngIf="!isNewUser">
+      <input name="email" type="email" placeholder="Insert email here"
+        [(ngModel)]="email">
+      <input name="password" type="password" placeholder="Insert password"
+        [(ngModel)]="password">
+      <button type="submit" name="enter">Log In</button>
+      <h4 (click)="changeForm()">Not have any Account yet? >> Register</h4>
+    </form>
+    <button (click)="login('git')">Entrar com GitHub</button>
+  </div>
 </div>
