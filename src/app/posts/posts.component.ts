@@ -12,10 +12,12 @@ export class PostsComponent implements OnInit {
   posts: any = [];
   title: string;
   text: string;
+  comment: string;
   usua: string;
   author;
   id;
   authors = {};
+  comments = [];
 
   constructor(private db: AngularFireDatabase,
     private post: PostService,
@@ -27,6 +29,7 @@ export class PostsComponent implements OnInit {
       posts => {
         // Limpando
         this.posts = [];
+        this.comments = [];
         // Obtendo autores
         this.author = Object.keys(posts);
         for (const author of this.author) {
@@ -35,6 +38,8 @@ export class PostsComponent implements OnInit {
           Object.values(posts[author]).forEach((a, i) => {
             // guardando autor de cada
             this.authors[this.id[i]] = author;
+            // comentarios de cada
+            this.comments.push(Object.values(a['comments'] || {}));
             this.posts.push(a);
           });
         }
@@ -43,5 +48,9 @@ export class PostsComponent implements OnInit {
 
   onPost(): void {
     this.post.add(this.usua, {title: this.title, text: this.text});
+  }
+
+  onComment(path): void {
+    this.post.comment(path, {author: this.usua, text: this.comment});
   }
 }
