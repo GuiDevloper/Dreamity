@@ -23,12 +23,8 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  logout() {
-    this.ngAuth.auth.signOut();
-  }
-
   ngOnInit() {
-    this.usua = this.route.snapshot.paramMap.get('user');
+    this.usua = this.route.snapshot.paramMap.get('user') || 'guidevloper';
     this.db.object(`/profiles/${this.usua}`).valueChanges().subscribe(
       pro => {
         // obtendo profile de acordo com url
