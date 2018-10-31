@@ -10,24 +10,57 @@ import { AngularFireDatabase } from 'angularfire2/database';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  userName: string;
   User;
   users: Observable<any>;
 
-  constructor(public user: UserService, public db: AngularFireDatabase) {
-    this.users = db.object('/users/1/login').valueChanges();
-    this.welcome();
+  isNewUser = true;
+  username = '';
+  email = '';
+  password = '';
+  errorMessage = '';
+  error: { name: string, message: string } = { name: '', message: '' };
+
+  constructor(public user: UserService,
+    public db: AngularFireDatabase) {
+    this.users = this.db.object('/users/1/login').valueChanges();
   }
 
   ngOnInit() {
   }
-  async welcome() {
-    this.User = this.user.userData();
-    this.userName = this.User ? this.User.displayName : 'Type abaixo';
+
+  onLoginEmail(): void {
+    this.clearErrorMessage();
+
+    this.user.loginWithEmail(this.email, this.password)
+      .then(() => this.user.goTo('profile'))
+      .catch(_error => {
+        this.error = _error;
+      });
   }
 
-  login() {
-    this.user.goTo('profile');
+  onSignUp(): void {
+    this.clearErrorMessage();
+
+    this.user.signUpWithEmail(this.username, this.email, this.password)
+      .then(() => this.user.goTo(`profile/${this.username}`))
+      .catch(_error => {
+        this.error = _error;
+      });
   }
 
+  changeForm(): void {
+    this.isNewUser = !this.isNewUser;
+  }
+
+  login(prov) {
+    this.user.logWith(prov)
+      .catch(error => {
+        this.errorMessage = error.message;
+      });
+  }
+
+  clearErrorMessage(): void {
+    this.errorMessage = '';
+    this.error = { name: '', message: '' };
+  }
 }
