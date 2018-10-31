@@ -2,27 +2,59 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { User } from './user';
-import { Observable } from 'rxjs';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { auth } from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   user: User;
-  users: Observable<any>;
+  users: any;
 
   constructor(public ngAuth: AngularFireAuth,
     private ngZone: NgZone,
-    private router: Router, public db: AngularFireDatabase) {
-      this.users = db.object('/users/1/login').valueChanges();
+    private router: Router,
+    public db: AngularFireDatabase) {
+      this.users = db.object('/users/');
     }
 
-  async userData() {
-    this.ngAuth.authState.subscribe(use => {
-      this.user = use;
+  async isLogged() {
+    return await this.ngAuth.authState;
+  }
+
+  loginWithEmail(user, password) {
+    return this.ngAuth.auth.signInWithEmailAndPassword(user, password)
+      .catch(err => {
+        this.handleError(err);
+      });
+  }
+
+  signUpWithEmail(user, email, password) {
+    return this.ngAuth.auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        this.users.push(user);
+        this.goTo(`profile/${user}`);
+      })
+      .catch(err => {
+        this.handleError(err);
+      });
+  }
+
+  logWith(provider) {
+    provider = provider === 'git' ?
+      new auth.GithubAuthProvider() : '';
+    return this.ngAuth.auth.signInWithPopup(provider)
+      .then(() => this.goTo(''))
+      .catch((err) => {
+        throw err;
+      });
+  }
+
+  goTo(url: string): void {
+    this.ngZone.run(() => {
+      this.router.navigateByUrl(url);
     });
-    return await this.user;
   }
 
   Logout(): void {
@@ -30,21 +62,7 @@ export class UserService {
     this.goTo('');
   }
 
-  logWith(provider): void {
-    const rt = this.router;
-    const ngz = this.ngZone;
-    this.ngAuth.auth.signInWithPopup(provider).then((result) => {
-      this.goTo('');
-    }).catch((err) => {
-      this.logWith(provider);
-    });
-  }
-
-  goTo(url: string): void {
-    const rt = this.router;
-    const ngz = this.ngZone;
-    ngz.run(() => {
-      rt.navigateByUrl(url);
-    });
+  handleError(error) {
+    throw error;
   }
 }
