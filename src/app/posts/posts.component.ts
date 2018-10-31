@@ -31,11 +31,11 @@ export class PostsComponent implements OnInit {
         this.posts = [];
         this.comments = [];
         // Obtendo autores
-        this.author = Object.keys(posts);
+        this.author = this.usua === '' ? Object.keys(posts) : [this.usua];
         for (const author of this.author) {
           // chaves de posts por autor
-          this.id = Object.keys(posts[author]);
-          Object.values(posts[author]).forEach((a, i) => {
+          this.id = Object.keys(posts[author] || posts);
+          Object.values(posts[author] || posts).forEach((a, i) => {
             // guardando autor de cada
             this.authors[this.id[i]] = author;
             // comentarios de cada
