@@ -1,9 +1,14 @@
 <nav class="navbar">
   <ul>
-    <li routerLink="">{{navli[0]}}</li>
-    <li routerLink="about">{{navli[1]}}</li>
-    <li *ngIf="navli[2] == 'Log in'" routerLink="/login">{{navli[2]}}</li>
-    <li *ngIf="navli[2].includes('Profile')" routerLink="/profile">{{navli[2]}}</li>
-    <li (click)="user.Logout()">{{navli[3]}}</li>
+    <li routerLink="">Home</li>
+    <li routerLink="about">About</li>
+    <li *ngIf="logado | async as user; else showLogin" routerLink="/profile/guidevloper">
+      {{ user['email'].split(' ')[0] }} Profile
+    </li>
+    <li *ngIf="logado | async" (click)="user.Logout()">Log out</li>
+    <ng-template #showLogin>
+      <li routerLink="/login"> Log In </li>
+      <li routerLink="/login"> Sign In </li>
+    </ng-template>
   </ul>
 </nav>

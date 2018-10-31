@@ -1,6 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { UserService } from './../user.service';
 import { User } from '../user';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'app-navbar',
@@ -10,26 +11,16 @@ import { User } from '../user';
 export class NavbarComponent implements OnInit {
   navli: string[];
   User;
+  logado: any = null;
 
-  constructor(public user: UserService, public ngz: NgZone) { }
-
-  // async SE user está logado
-  async isLogged() {
-    let terceiro, quarto;
-    const u = await this.user.userData();
-    this.ngz.run(() => {
-      this.User = u;
-      // armazena 3o e 4o
-      terceiro = this.User ?
-        this.User.displayName.split(' ')[0] + ' Profile' : 'Log in';
-      quarto = this.User ? 'Log out' : 'Sign in';
-      // adiciona tudo a lista
-      this.navli = ['Home', 'About', terceiro, quarto];
-    });
-  }
+  constructor(public user: UserService,
+    public ngz: NgZone,
+    public ngAuth: AngularFireAuth) { }
 
   ngOnInit() {
-    this.isLogged();
+    this.user.isLogged().then(a => {
+      this.logado = a;
+    });
   }
 
 }
