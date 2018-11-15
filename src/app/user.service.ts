@@ -16,7 +16,7 @@ export class UserService {
     private ngZone: NgZone,
     private router: Router,
     public db: AngularFireDatabase) {
-      this.users = db.object('/users/');
+      this.users = db.list('/users/');
     }
 
   async isLogged() {
@@ -63,6 +63,7 @@ export class UserService {
   }
 
   handleError(error) {
+    console.log(error);
     throw error;
   }
 }

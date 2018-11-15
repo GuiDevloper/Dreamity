@@ -15,6 +15,7 @@ export class ProfileComponent implements OnInit {
   usua: any = null;
   text = '';
   profile: any;
+  update = false;
 
   constructor(
     private db: AngularFireDatabase,
@@ -30,5 +31,10 @@ export class ProfileComponent implements OnInit {
         // obtendo profile de acordo com url
         this.profile = pro;
       });
+  }
+
+  editProfile() {
+    this.db.object(`/profiles/${this.usua}`).update(this.profile);
+    this.update = false;
   }
 }

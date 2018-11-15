@@ -1,18 +1,26 @@
 <div id="background">
   <app-navbar></app-navbar>
-  <div id="header">
-    <div id="avatar"></div>
-    <div id="data" *ngIf="profile">
-      <p id="username" >
-        Welcome to My World - {{ usua }}
-      </p>
-      <p id="line-info">
-        {{ profile.description }}
-      </p>
-      <p id="bio"> {{ profile.bio }}
-        Guilherme, aka GuiDevloper a pragmatic and passionate coder and sometimes designer, thats loves every moment creating and developing things, including himself.
-      </p>
+  <div id="header" *ngIf="profile">
+    <div id="avatar" [ngStyle]="{
+      backgroundImage: 'url('+profile.img+')'}"></div>
+    <div id="data">
+      <!--Welcome to My World -->
+      <input type="text" [(ngModel)]="usua"
+        [disabled]="!update" id="username">
+      <input type="text" id="line-info"
+        [(ngModel)]="profile.description" [disabled]="!update">
+      <textarea type="text" [(ngModel)]="profile.bio"
+        id="bio" [disabled]="!update">
+      </textarea>
+      <input type="text" [(ngModel)]="profile.img"
+        *ngIf="update" id="imgUrl">
     </div>
+    <button (click)="update = true" *ngIf="!update">
+      Editar Profile
+    </button>
+    <button (click)="editProfile()" *ngIf="update">
+      Salvar Profile
+    </button>
   </div>
   <app-posts></app-posts>
 </div>

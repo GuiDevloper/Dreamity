@@ -26,7 +26,7 @@
   .title {
     font-size: 3rem;
     padding: 10vh 5% 0;
-    animation: flicker 10s linear infinite;
+    //animation: flicker 3s infinite;
   }
   .subtitle {
     font-size: 1.4rem;
@@ -36,7 +36,7 @@
   padding-top: 40vh;
 }
 
-@keyframes flicker {
+/*@keyframes flicker {
   from {
     opacity: 1;
   }
@@ -160,4 +160,4 @@
   to {
     opacity: 1;
   }
-}
+}*/
