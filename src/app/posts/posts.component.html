@@ -1,27 +1,56 @@
-<div id="posts">
-  <form (ngSubmit)="onPost()" *ngIf="usua">
-    <input name="title" type="text" placeholder="title" [(ngModel)]="title">
-    <textarea name="text" placeholder="post" [(ngModel)]="text"></textarea>
+<app-navbar *ngIf="isDream"></app-navbar>
+<div id="posts" [ngClass]="{left: !usua, onePost: isDream}">
+  <form (ngSubmit)="onPost()" *ngIf="usua && !isDream">
+    <input name="title" type="text" placeholder="title"
+      [(ngModel)]="title">
+    <textarea name="text" placeholder="post" [(ngModel)]="text">
+    </textarea>
     <button type="submit" name="enter">Cadastrar</button>
   </form>
   <div class="grid grid-pad">
-    <div class="post c-7o12 m-1o1"
+    <div class="post c-7o12 m-1o1" (click)="openPost(i)"
       *ngFor="let post of posts; let i = index">
       <div class="blur"></div>
       <div class="text">
-        <p class="author">
-          {{ post.title }} - {{ authors[id[i]] }}
+        <div *ngIf="isDream" class="dreamLvl">
+          <p>Great Imagination - Will Be Realised</p>
+          <progress value='{{progress}}' max="20">{{progress}}</progress>
+          <input type="range" min="0" max="20" (change)="updateLvl()" [(ngModel)]="lvl">
+        </div>
+        <div *ngIf="isDream && profile" id="avatar"
+          [ngStyle]="{backgroundImage: 'url('+profile.img+')'}">
+        </div>
+        <p *ngIf="isDream" class="author img">
+          - {{ getAuthor(i) }}
         </p>
-        <p class="postText"> {{ post.text }} </p>
-        <div *ngFor="let comment of comments[i]">
-          <p>{{ comment.author }}</p>
-          <p>{{ comment.text }}</p>
+        <p class="author">
+          {{ parseTitle(post.title, authors[id[i]]) }}
+        </p>
+        <p class="time">
+          {{ post.time }}
+        </p>
+        <p class="postText">
+          {{ limitText(post.text) }}
+        </p>
+        <div [ngClass]="{comment: isDream}">
+          <form *ngIf="commenter" (ngSubmit)="onComment()">
+            <input name="comment" [(ngModel)]="comment"
+              placeholder="type something gently here">
+            <button type="reset" name="reset">Limpar</button>
+            <button type="submit" name="enter">Cadastrar</button>
+          </form>
+          <p *ngIf="!isDream && of(comments[i][0]) | async as com; else showCom">
+            {{ coment.countComment(com) }}
+          </p>
+          <ng-template #showCom>
+            <div *ngFor="let com of comments" [ngClass]="{showCom: isDream}">
+              <p> {{ com.author }} -> </p>
+              <p> {{ com.text }} </p>
+            </div>
+          </ng-template>
         </div>
       </div>
-      <form *ngIf="usua" (ngSubmit)="onComment(author[0]+'/'+id[i]+'/comments')">
-        <input name="comment" placeholder="comment" [(ngModel)]="comment">
-        <button type="submit" name="enter">Cadastrar</button>
-      </form>
     </div>
   </div>
+  <app-footer *ngIf="isDream" id="footer"></app-footer>
 </div>
