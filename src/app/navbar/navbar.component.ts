@@ -12,15 +12,22 @@ export class NavbarComponent implements OnInit {
   navli: string[];
   User;
   logado: any = null;
+  mostrar = false;
 
   constructor(public user: UserService,
     public ngz: NgZone,
     public ngAuth: AngularFireAuth) { }
 
   ngOnInit() {
-    this.user.isLogged().then(a => {
-      this.logado = a;
+    this.user.isLogged().subscribe(use => {
+      if (use) {
+        const u = this.user.getUser(use.uid);
+        if (!u[1]) {
+          u[0].subscribe(user => this.logado = user);
+        } else {
+          this.logado = u[0];
+        }
+      }
     });
   }
-
 }

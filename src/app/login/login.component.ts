@@ -1,8 +1,8 @@
+import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user';
-import { AngularFireDatabase } from 'angularfire2/database';
 
 @Component({
   selector: 'app-login',
@@ -20,31 +20,34 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   error: { name: string, message: string } = { name: '', message: '' };
 
-  constructor(public user: UserService,
-    public db: AngularFireDatabase) {
-    this.users = this.db.object('/users/1/login').valueChanges();
-  }
+  constructor(private user: UserService,
+    private ngAuth: AngularFireAuth) {}
 
   ngOnInit() {
   }
 
   onLoginEmail(): void {
     this.clearErrorMessage();
-
-    this.user.loginWithEmail(this.email, this.password)
-      .then(() => this.user.goTo('profile'))
-      .catch(_error => {
-        this.error = _error;
+    this.ngAuth.auth.signInWithEmailAndPassword(this.email, this.password)
+      .then(a => {
+        this.user.getUser(a.user.uid).subscribe(use => {
+          this.user.goTo(`/${use}`);
+        });
+      })
+      .catch(err => {
+        this.error = err;
       });
   }
 
   onSignUp(): void {
     this.clearErrorMessage();
-
-    this.user.signUpWithEmail(this.username, this.email, this.password)
-      .then(() => this.user.goTo(`profile/${this.username}`))
-      .catch(_error => {
-        this.error = _error;
+    this.ngAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
+      .then(newUser => {
+        this.user.create(newUser.user.uid, this.username);
+        this.user.goTo(`/${this.username}`);
+      })
+      .catch(err => {
+        this.error = err;
       });
   }
 
@@ -52,7 +55,7 @@ export class LoginComponent implements OnInit {
     this.isNewUser = !this.isNewUser;
   }
 
-  login(prov) {
+  login(prov): void {
     this.user.logWith(prov)
       .catch(error => {
         this.errorMessage = error.message;

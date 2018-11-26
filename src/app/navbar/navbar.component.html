@@ -2,10 +2,10 @@
   <ul>
     <li routerLink="">Home</li>
     <li routerLink="about">About</li>
-    <li *ngIf="logado | async as user; else showLogin" routerLink="/profile/guidevloper">
-      {{ user['email'].split(' ')[0] }} Profile
+    <li *ngIf="logado; else showLogin" routerLink="/{{ logado }}">
+      {{ logado }} Profile
     </li>
-    <li *ngIf="logado | async" (click)="user.Logout()">Log out</li>
+    <li *ngIf="logado" (click)="user.Logout()">Log out</li>
     <ng-template #showLogin>
       <li routerLink="/login"> Log In </li>
       <li routerLink="/login"> Sign In </li>
