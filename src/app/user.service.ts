@@ -35,6 +35,24 @@ export class UserService {
     }
   }
 
+  /*
+  * Puxa dados do profile
+  * @param user: string = username
+  **/
+  getProfile(user): any {
+    if (this.profile) {
+      return [this.profile, true];
+    } else {
+      const prof = this.db.object(`/profiles/${user}`).valueChanges();
+      prof.subscribe(pro => this.profile = pro);
+      return [prof, false];
+    }
+  }
+
+  updateProfile(user, data) {
+    this.db.object(`/profiles/${user}`).update(data);
+  }
+
   logWith(provider) {
     provider = provider === 'git' ?
       new auth.GithubAuthProvider() : '';

@@ -15,12 +15,14 @@
       <input type="text" [(ngModel)]="profile.img"
         *ngIf="update" id="imgUrl">
     </div>
-    <button (click)="update = true" *ngIf="!update">
-      Editar Profile
-    </button>
-    <button (click)="editProfile()" *ngIf="update">
-      Salvar Profile
-    </button>
+    <div *ngIf="myProfile">
+      <button (click)="update = true" *ngIf="!update">
+        Editar Profile
+      </button>
+      <button (click)="editProfile()" *ngIf="update">
+        Salvar Profile
+      </button>
+    </div>
   </div>
   <app-posts></app-posts>
 </div>

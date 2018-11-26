@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   error: { name: string, message: string } = { name: '', message: '' };
 
-  constructor(private user: UserService,
+  constructor(public user: UserService,
     private ngAuth: AngularFireAuth) {}
 
   ngOnInit() {
