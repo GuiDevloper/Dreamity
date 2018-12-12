@@ -74,7 +74,7 @@ export class UserService {
   create(uid, username) {
     const newUser = {};
     newUser[uid] = username;
-    this.users.update('/', newUser);
+    return this.users.update('/', newUser);
   }
 
   goTo(url: string): void {

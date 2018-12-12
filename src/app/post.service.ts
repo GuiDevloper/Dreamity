@@ -7,6 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class PostService {
   posts: any;
+  imgs: Array<string> = [
+    'https://i.pinimg.com/564x/26/94/f8/2694f861b9e3fa5cf6f3f4a6bb19f7b5.jpg',
+    'https://i.pinimg.com/564x/82/42/c6/8242c639e3e45cf791d061074b562954.jpg',
+    'https://i.pinimg.com/564x/fd/b4/23/fdb4234977b0c09e9f078e6025fc1c94.jpg'
+  ];
+  btnEdit = 'Editar';
 
   constructor(private db: AngularFireDatabase) { }
 
@@ -22,9 +28,28 @@ export class PostService {
     value = {
       title: value[0],
       text: value[1],
-      time: value[2]
+      img: value[2],
+      time: value[3]
     };
     this.db.list(`/posts/${user}`).push(value);
+  }
+
+  update(user, id, newValue) {
+    newValue = {
+      title: newValue[0],
+      text: newValue[1],
+    };
+    return this.db.object(`posts/${user}/${id}/`).update(newValue)
+      .catch(err => {
+        throw err;
+      });
+  }
+
+  delete(user, id) {
+    return this.db.object(`posts/${user}/${id}/`).remove()
+      .catch(err => {
+        throw err;
+      });
   }
 
   /*
@@ -51,24 +76,12 @@ export class PostService {
   format(timePost): string {
     // Obtem há quanto tempo foi postado
     const tempodoPost = new Date().getTime() - timePost.getTime();
-    const minutos = this.n(tempodoPost / 60000);
-    const horas = this.n(minutos / 60);
-    const dias = this.n(horas / 24);
+    const minutos = Math.floor(tempodoPost / 60000);
+    const horas = Math.floor(minutos / 60);
+    const dias = Math.floor(horas / 24);
     return dias ? `Há ${dias} dias.` :
       (horas ? `Há ${horas} horas.` :
       (minutos ? `Há ${minutos} minutos.` : 'Agora a pouco.'));
-  }
-
-  /*
-  * Normaliza pra inteiro caso fracionado
-  * @param time: min/hor/dia possivelmente
-  * fracionado após divisão
-  **/
-  n(time): number {
-    time += '';
-    // remove tudo após virgula
-    return time > 0 ? (time.substring(
-      0, time.indexOf('.')) || time) : false;
   }
 
 }
