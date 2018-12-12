@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
   coments: Array<object> = [];
+  show = false;
+  edited: string;
+  btnEdit: Array<string> = ['Editar'];
+  // lvl de imagination
+  lvl: number = null;
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase,
+    private user: UserService) { }
 
   /*
   * Puxa comentários deste post
   * @param id: string = id do post
   **/
-  getComents(id, i): any {
-    if (this.coments[i]) {
-      return [this.coments[i], true];
-    } else {
-      const comData = this.db.list(`comments/${id}`).valueChanges();
-      comData.subscribe(use => {
-        this.coments.push(use);
-      });
-      return [comData, false];
-    }
+  getComents(id): any {
+    const comData = this.db.object(`comments/${id}`).valueChanges();
+    return comData;
   }
 
   create(path, value) {
@@ -34,8 +34,36 @@ export class CommentService {
     this.db.list(path).push(value);
   }
 
-  update(id, value) {
-    this.db.object(`comments/${id}/lvls`).update(value);
+  update(id, comId, newValue) {
+    newValue = {
+      text: newValue
+    };
+    this.db.object(`comments/${id}/${comId}`).update(newValue)
+      .catch(err => {
+        throw err;
+      });
+  }
+
+  /*
+  * Atualiza lvl do sonho
+  **/
+  updateLvl(id) {
+    this.user.isLogged().subscribe(use => {
+      const name = this.user.getUser(use.uid)[0];
+      const newVal = {};
+      newVal[name] = this.lvl;
+      this.db.object(`comments/${id}/lvls`).update(newVal)
+        .catch(err => {
+          throw err;
+      });
+    });
+  }
+
+  delete(id, comId) {
+    return this.db.object(`comments/${id}/${comId}`).remove()
+      .catch(err => {
+        throw err;
+      });
   }
 
   /*
@@ -43,10 +71,11 @@ export class CommentService {
   * @param coments: lista de comentários
   **/
   hasLvls(coments) {
+    coments = Object.keys(coments);
     const len = coments.length;
     // SE até o ultimo for comentario com autor
     const hasComenters = len > 0 ?
-      Object.keys(coments[len - 1])[0] === 'author' : false;
+      coments[len - 1] !== 'lvls' : false;
     // retorna [boolean, tamanhoTotal]
     return [hasComenters, len];
   }
@@ -65,7 +94,7 @@ export class CommentService {
   }
 
   somaLvls(com) {
-    const lvls = Object.values(com.pop());
+    const lvls = Object.values(com['lvls']);
     let soma: any = 0, index = 1;
     // percorre lvls calculado
     lvls.forEach((element, i) => {
