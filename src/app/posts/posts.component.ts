@@ -1,9 +1,7 @@
-import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../post.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from './../user.service';
-import { Observable, of } from 'rxjs';
 import { CommentService } from './../comment.service';
 
 @Component({
@@ -12,10 +10,11 @@ import { CommentService } from './../comment.service';
   styleUrls: ['./posts.component.scss']
 })
 export class PostsComponent implements OnInit {
-  posts: Array<object>;
+  dreams: Array<object>;
   // Dados do sonho postado
   title: string;
   text: string;
+
   // novo coment
   comment: string;
   // usuário logado
@@ -23,20 +22,16 @@ export class PostsComponent implements OnInit {
   // todos autores dos posts
   author: Array<string>;
   // id de cada post
-  id: Array<string>;
-  // autores por id de post
-  authors: object = {};
+  id: Array<string> | string;
 
-  comments: undefined[] | Observable<{}[]>;
+  comments: Array<any>;
   commenter = false;
   isDream = false;
   profile: object = null;
-  // lvl de imagination
-  lvl: number = null;
   progress: number = null;
+  newPost: number = null;
 
-  constructor(private db: AngularFireDatabase,
-    private post: PostService,
+  constructor(private post: PostService,
     private coment: CommentService,
     private route: ActivatedRoute,
     private user: UserService) { }
@@ -49,6 +44,7 @@ export class PostsComponent implements OnInit {
       this.commenter = true;
       this.usua = rtSnap.paramMap.get('profile');
       this.isDream = true;
+      this.coment.show = false;
       this.loadPosts();
     } else {
       // Deverá listar
@@ -81,37 +77,32 @@ export class PostsComponent implements OnInit {
     // carrega posts de user ou de todos
     this.post.getPosts(this.usua).subscribe(posts => {
       // Limpa armazenadores
-      this.posts = [];
+      this.dreams = [];
       this.comments = [];
       // Obtendo todos os autores
       this.author = this.usua === '' ? Object.keys(posts) : [this.usua];
       // percorre autores separando
       for (const author of this.author) {
         // id de posts por autor
-        this.id = Object.keys(posts[author] || posts);
-        Object.values(posts[author] || posts)
+        this.id = Object.keys(posts[author] || posts).reverse();
+        Object.values(posts[author] || posts).reverse()
         .forEach((a, i) => {
           // guardando autor de cada id
-          this.authors[this.id[i]] = author;
+          a['author'] = author;
           // comentarios de cada post
-          this.comments[i] = this.coment.getComents(this.id[i], i) || [];
+          this.comments[i] = this.coment.getComents(this.id[i]) || [];
           // guarda Date formatado de cada post
           a['time'] = this.post.getDate(a['time']);
-          this.posts.push(a);
+          this.dreams.push(a);
         });
-        // console.log(this.of(this.comments[0][0]));
       }
       if (this.isDream) {
         // index do sonho
         const iDream = this.route.snapshot.paramMap.get('dream');
         // especifica dados para este sonho apenas
         this.id = this.id[iDream];
-        this.posts = [this.posts[iDream]];
-        if (!this.comments[iDream][1]) {
-          this.comments[iDream][0].subscribe(com => this.storeLvls(com));
-        } else {
-          this.storeLvls(this.comments[iDream][0]);
-        }
+        this.dreams = [this.dreams[iDream]];
+        this.comments[iDream].subscribe(com => this.storeLvls(com));
         const pro = this.user.getProfile(this.usua);
         if (!pro[1]) {
           pro[0].subscribe(prof => this.profile = prof);
@@ -123,18 +114,23 @@ export class PostsComponent implements OnInit {
   }
   storeLvls(comm) {
     const lvlLen = this.coment.hasLvls(comm);
+    let len = 0;
     // SE tem lvls e array > 0
     if (!lvlLen[0] && lvlLen[1] > 0) {
       this.progress = this.coment.somaLvls(comm);
-    }
-    this.comments = comm;
-  }
-  of(obj) {
-    if (obj.source) {
-      return of(obj)['value'];
+      len = lvlLen[1] - 1;
     } else {
-      return of(obj);
+      len = lvlLen[1];
     }
+    this.comments = [
+      Object.keys(comm).slice(0, len),
+      Object.values(comm).slice(0, len)
+    ];
+    this.coment.show = true;
+  }
+
+  of(obj, i) {
+    return obj[this.newPost === 0 ? (i - 1) : i];
   }
 
   /*
@@ -142,8 +138,10 @@ export class PostsComponent implements OnInit {
   * @param title: titulo do post
   * @param author: autor do post
   **/
-  parseTitle(title, author): string {
-    return this.isDream ? title : title + ' - ' + author;
+  parseTitle(title, i, isAut): string {
+    const author = this.dreams[i]['author'];
+    return author && this.isDream && !isAut ? title :
+      (isAut ? this.getAuthor(i) + ':.' : title);
   }
 
   /*
@@ -161,17 +159,32 @@ export class PostsComponent implements OnInit {
   **/
   getAuthor(id): string {
     // SEnao post -> retorna autor pelo array de ids
-    return this.isDream ? this.authors[this.id.toString()] :
-      this.authors[this.id[id]];
+    return this.isDream ? this.dreams[id]['author'] :
+      (this.isNew(id) ? this.usua : this.dreams[id]['author']);
   }
 
   /*
   * Posta sonho em nome de user logado
   **/
   onPost(): void {
-    this.post.create(this.usua,
-      [this.title, this.text, new Date().getTime()]
-    );
+    const values = [this.title, this.text, this.dreams[0]['img'], new Date().getTime()];
+    if (values[0] && values[1]) {
+      this.newPost = null;
+      this.post.create(this.usua, values);
+    } else {
+      console.log('Preencha todos os campos');
+    }
+  }
+  writeNew(input?, evt?): void {
+    this[input] = evt ? evt.target.value : '';
+    if (!this.isDream) {
+      if (this.newPost !== 0) {
+        this.dreams.unshift({title: '', text: '', img: 0});
+        this.newPost = 0;
+      }
+    } else {
+      console.log(this.title, this.text);
+    }
   }
 
   /*
@@ -187,19 +200,69 @@ export class PostsComponent implements OnInit {
   * @param path: string = index do sonho
   **/
   openPost(path): void {
-    if (!this.isDream) {
+    if (!this.isDream && !this.isNew(path)) {
       path = `${this.author[0]}/p/${path}`;
       this.user.goTo(path);
     }
   }
 
-  /*
-  * Atualiza lvl do sonho
-  **/
-  updateLvl(): void {
-    const newVal = {};
-    newVal[this.usua] = this.lvl;
-    this.coment.update(this.id, newVal);
+  isNew(i): boolean {
+    return this.newPost === 0 && i === this.newPost;
+  }
+
+  newBack(img): void {
+    this.dreams[0]['img'] = img;
+  }
+
+  editPost(): void {
+    if (this.post.btnEdit === 'Editar') {
+      this.post.btnEdit = 'Salvar';
+    } else {
+      this.coment.show = false;
+      const newValues = [
+        this.title || this.dreams[0]['title'],
+        this.text || this.dreams[0]['text']
+      ];
+      this.post.update(this.usua, this.id, newValues).then(() => {
+        this.post.btnEdit = 'Editar';
+        if (!(this.title && this.text)) {
+          console.log('Alguns dados mantidos');
+        }
+        this.coment.show = true;
+      });
+    }
+  }
+
+  delPost(): void {
+    this.post.delete(this.usua, this.id)
+      .then(() => {
+        console.log(this.id, 'post deletado');
+        this.user.goTo('');
+      });
+  }
+
+  editCom(i): void {
+    if (!this.coment.btnEdit[i]) {
+      this.coment.btnEdit[i] = 'Editar';
+    }
+    if (this.coment.btnEdit[i] === 'Editar') {
+      this.coment.btnEdit[i] = 'Salvar';
+    } else {
+      const newVal = this.coment.edited || this.comments[1][i].text;
+      const comentId = this.comments[0][i];
+      this.coment.update(this.id, comentId, newVal);
+      this.coment.btnEdit[i] = 'Editar';
+      if (this.coment.edited) {
+        console.log('Comentario editado');
+      } else {
+        console.log('Comentario mantido');
+      }
+    }
+  }
+
+  delCom(i): void {
+    this.coment.delete(this.id, this.comments[0][i])
+      .then(() => console.log(i, 'deletado'));
   }
 
 }
