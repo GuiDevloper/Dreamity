@@ -1,21 +1,22 @@
 <app-navbar *ngIf="isDream"></app-navbar>
 <div id="posts" [ngClass]="{left: !usua, onePost: isDream}">
   <form (ngSubmit)="onPost()" *ngIf="usua && !isDream">
-    <input name="title" type="text" placeholder="title"
-      [(ngModel)]="title">
-    <textarea name="text" placeholder="post" [(ngModel)]="text">
-    </textarea>
-    <button type="submit" name="enter">Cadastrar</button>
+    <button type="button" (click)="writeNew()">Novo Post</button>
+    <div *ngIf="newPost === 0">
+      <input *ngFor="let rdo of [0, 1, 2]"
+        type="radio" name="rImg" (click)="newBack(rdo)">
+      <button type="submit" name="enter">Cadastrar</button>
+    </div>
   </form>
   <div class="grid grid-pad">
     <div class="post c-7o12 m-1o1" (click)="openPost(i)"
-      *ngFor="let post of posts; let i = index">
-      <div class="blur"></div>
+      *ngFor="let dream of dreams; let i = index" [ngStyle]="{opacity: isNew(i) ? 0.9 : 1}">
+      <div class="blur" [ngStyle]="{backgroundImage: 'url('+post.imgs[dream.img]+')'}"></div>
       <div class="text">
         <div *ngIf="isDream" class="dreamLvl">
           <p>Great Imagination - Will Be Realised</p>
           <progress value='{{progress}}' max="20">{{progress}}</progress>
-          <input type="range" min="0" max="20" (change)="updateLvl()" [(ngModel)]="lvl">
+          <input type="range" min="0" max="20" (change)="coment.updateLvl(id)" [(ngModel)]="lvl">
         </div>
         <div *ngIf="isDream && profile" id="avatar"
           [ngStyle]="{backgroundImage: 'url('+profile.img+')'}">
@@ -23,29 +24,36 @@
         <p *ngIf="isDream" class="author img">
           - {{ getAuthor(i) }}
         </p>
-        <p class="author">
-          {{ parseTitle(post.title, authors[id[i]]) }}
-        </p>
+        <p class="author">{{ parseTitle(dream.title, i, true) }}</p>
+        <input type="text" class="author" [value]="parseTitle(dream.title, i, false)" [disabled]="!isNew(i) && post.btnEdit !== 'Salvar'"
+          name="title" placeholder="Entitule seu sonho" (input)="writeNew('title', $event)">
         <p class="time">
-          {{ post.time }}
+          {{ dream.time }}
         </p>
-        <p class="postText">
-          {{ limitText(post.text) }}
-        </p>
-        <div [ngClass]="{comment: isDream}">
+        <textarea class="postText" [value]="limitText(dream.text)" [disabled]="!isNew(i) && post.btnEdit !== 'Salvar'"
+          name="text" placeholder="Digite o que tens sonhado" (input)="writeNew('text', $event)">
+        </textarea>
+        <div *ngIf="!isNew(i)" [ngClass]="{comment: isDream}">
           <form *ngIf="commenter" (ngSubmit)="onComment()">
             <input name="comment" [(ngModel)]="comment"
               placeholder="type something gently here">
             <button type="reset" name="reset">Limpar</button>
             <button type="submit" name="enter">Cadastrar</button>
           </form>
-          <p *ngIf="!isDream && of(comments[i][0]) | async as com; else showCom">
+          <p *ngIf="!isDream && of(comments, i) | async as com; else showCom">
             {{ coment.countComment(com) }}
           </p>
           <ng-template #showCom>
-            <div *ngFor="let com of comments" [ngClass]="{showCom: isDream}">
+            <div *ngIf="usua === getAuthor(i)">
+              <button (click)="editPost()">{{ post.btnEdit }}</button>
+              <button (click)="delPost()">Deletar</button>
+            </div>
+            <div *ngFor="let com of (coment.show ? comments[1] : []); let i = index" [ngClass]="{showCom: isDream}">
               <p> {{ com.author }} -> </p>
-              <p> {{ com.text }} </p>
+              <input [value]="com.text" name="title" placeholder="Seja gentil" (input)="coment.edited = $event.target.value"
+                [disabled]="coment.btnEdit[i] !== 'Salvar'">
+              <input type="button" *ngIf="usua === com.author" (click)="editCom(i)" [value]="coment.btnEdit[i] || 'Editar'">
+              <input type="button" *ngIf="usua === com.author" (click)="delCom(i)" value="Deletar">
             </div>
           </ng-template>
         </div>
