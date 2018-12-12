@@ -60,6 +60,7 @@
       width: 40%;
       min-height: 50%;
       margin-bottom: 2%;
+      float: initial;
     }
     .showCom {
       width: 90%;
@@ -147,7 +148,7 @@
 }
 
 .post {
-  min-height: 20vh;
+  height: 200px;
   border-radius: 3px;
   margin-bottom: 10px;
   position: relative;
@@ -158,37 +159,56 @@
     position: absolute;
     background-position: center;
     filter: blur(5px);
-    top: 2.7%;
-    right: 0.5%;
-    bottom: 5%;
-    left: 0.6%;
+    top: 1%;
     margin: 0;
     background-size: cover;
-    height: 96%;
-    width: 95%;
+    height: inherit;
+    width: 97%;
     max-width: 99%;
   }
   p {
-    padding: 2%;
+    padding: 20px 0;
   }
   .text {
     position: relative;
     background: rgba(66, 13, 13, 0.75);
     border-radius: inherit;
     box-shadow: 5px 5px rgba(17, 17, 17, 0.8);
-    min-height: inherit;
+    height: 165px;
+    padding: 15px;
+    div {
+      float: left;
+      width: 100%;
+    }
   }
   .author {
     font-size: 1.3rem;
     font-weight: 600;
     padding-bottom: 0;
+    width: auto;
+    padding: 0;
+  }
+  input.author {
+    width: 75%;
   }
   .time {
     font-size: 0.9rem;
+    width: 100%;
   }
   .postText {
     font-size: 1rem;
-    padding-top: 2%;
+    padding-top: 1%;
+    width: 100%;
+  }
+  input, textarea {
+    border: 0;
+    background: transparent;
+    color: white;
+    font-family: inherit;
+    caret-color: white;
+  }
+  input, p, textarea {
+    float: left;
   }
 }
 

@@ -30,9 +30,12 @@ export class LoginComponent implements OnInit {
     this.clearErrorMessage();
     this.ngAuth.auth.signInWithEmailAndPassword(this.email, this.password)
       .then(a => {
-        this.user.getUser(a.user.uid).subscribe(use => {
-          this.user.goTo(`/${use}`);
-        });
+        const u = this.user.getUser(a.user.uid);
+        if (!u[1]) {
+          u[0].subscribe(user => this.user.goTo(`/${user}`));
+        } else {
+          this.user.goTo(`/${u[0]}`);
+        }
       })
       .catch(err => {
         this.error = err;
@@ -43,8 +46,10 @@ export class LoginComponent implements OnInit {
     this.clearErrorMessage();
     this.ngAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
       .then(newUser => {
-        this.user.create(newUser.user.uid, this.username);
-        this.user.goTo(`/${this.username}`);
+        this.user.create(newUser.user.uid, this.username)
+        .then(
+          () => this.user.goTo(`/${this.username}`)
+        );
       })
       .catch(err => {
         this.error = err;
