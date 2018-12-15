@@ -24,8 +24,8 @@
         <p *ngIf="isDream" class="author img">
           - {{ getAuthor(i) }}
         </p>
-        <p class="author">{{ parseTitle(dream.title, i, true) }}</p>
-        <input type="text" class="author" [value]="parseTitle(dream.title, i, false)" [disabled]="!isNew(i) && post.btnEdit !== 'Salvar'"
+        <p class="author">{{ parseTitle(i) }}</p>
+        <input type="text" class="author" [value]="parseTitle(i, dream.title)" [disabled]="!isNew(i) && post.btnEdit !== 'Salvar'"
           name="title" placeholder="Entitule seu sonho" (input)="writeNew('title', $event)">
         <p class="time">
           {{ dream.time }}
