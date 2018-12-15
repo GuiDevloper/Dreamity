@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { UserService } from './user.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,36 +19,51 @@ export class CommentService {
 
   /*
   * Puxa comentários deste post
-  * @param id: string = id do post
+  * @param id = id do post
   **/
-  getComents(id): any {
-    const comData = this.db.object(`comments/${id}`).valueChanges();
-    return comData;
+  getComents(id: string): Observable<any> {
+    return this.db.object(`comments/${id}`).valueChanges();
   }
 
-  create(path, value) {
+  create(path: string, value: Array<string>): void {
     path = 'comments/' + path;
-    value = {
+    const newVal = {
       author: value[0],
       text: value[1]
     };
-    this.db.list(path).push(value);
+    this.db.list(path).push(newVal);
   }
 
-  update(id, comId, newValue) {
-    newValue = {
-      text: newValue
-    };
-    this.db.object(`comments/${id}/${comId}`).update(newValue)
-      .catch(err => {
-        throw err;
-      });
+  update(id: string, i: number, oldComents: object): void {
+    if (!this.btnEdit[i]) {
+      this.btnEdit[i] = 'Editar';
+    }
+    if (this.btnEdit[i] === 'Editar') {
+      this.btnEdit[i] = 'Salvar';
+    } else {
+      const comentId = oldComents[0][i];
+      const newValue = {
+        text: this.edited || oldComents[1][i].text
+      };
+      this.db.object(`comments/${id}/${comentId}`).update(newValue)
+        .then(() => {
+          if (this.edited) {
+            console.log('Comentario editado');
+          } else {
+            console.log('Comentario mantido');
+          }
+        })
+        .catch(err => {
+          throw err;
+        });
+      this.btnEdit[i] = 'Editar';
+    }
   }
 
   /*
   * Atualiza lvl do sonho
   **/
-  updateLvl(id) {
+  updateLvl(id: string): void {
     this.user.isLogged().subscribe(use => {
       const name = this.user.getUser(use.uid)[0];
       const newVal = {};
@@ -59,7 +75,7 @@ export class CommentService {
     });
   }
 
-  delete(id, comId) {
+  delete(id: string, comId: string): Promise<void> {
     return this.db.object(`comments/${id}/${comId}`).remove()
       .catch(err => {
         throw err;
@@ -68,32 +84,35 @@ export class CommentService {
 
   /*
   * SE é uma lista de coments com lvls
-  * @param coments: lista de comentários
+  * @param coments = lista de comentários
   **/
-  hasLvls(coments) {
-    coments = Object.keys(coments);
-    const len = coments.length;
+  hasLvls(coments: object): Array<boolean|number> {
+    const keysC = Object.keys(coments);
+    const len: number = keysC.length;
     // SE até o ultimo for comentario com autor
     const hasComenters = len > 0 ?
-      coments[len - 1] !== 'lvls' : false;
+      keysC[len - 1] !== 'lvls' : false;
     // retorna [boolean, tamanhoTotal]
-    return [hasComenters, len];
+    return [hasComenters, +len];
   }
 
   /*
   * Conta comentários por post
-  * @param coments: lista de comentários
+  * @param coments = lista de comentários
   **/
-  countComment(coments) {
+  countComment(coments: object): string {
     const lvlLen = this.hasLvls(coments);
     // SE tem lvls e tamanho > 0 -> diminui tamanho
-    const count = !lvlLen[0] && lvlLen[1] > 0 ? lvlLen[1] - 1 : lvlLen[1];
+    const count = (!lvlLen[0] && lvlLen[1] > 0) ? +lvlLen[1] - 1 : lvlLen[1];
     // SE deve ser plural
     const multi = count === 1 ? ' comment' : ' comments';
     return count + multi;
   }
 
-  somaLvls(com) {
+  /*
+  * Soma lvls salvos nos comentários
+  **/
+  somaLvls(com: object): number {
     const lvls = Object.values(com['lvls']);
     let soma: any = 0, index = 1;
     // percorre lvls calculado

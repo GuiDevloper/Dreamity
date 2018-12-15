@@ -21,11 +21,11 @@ export class UserService {
       this.users = db.list('/users/');
     }
 
-  isLogged() {
+  isLogged(): Observable<firebase.User> {
     return this.ngAuth.authState;
   }
 
-  getUser(uid): any {
+  getUser(uid: string): any {
     if (this.user) {
       return [this.user, true];
     } else {
@@ -37,9 +37,9 @@ export class UserService {
 
   /*
   * Puxa dados do profile
-  * @param user: string = username
+  * @param user = username
   **/
-  getProfile(user): any {
+  getProfile(user: string): any {
     if (this.profile) {
       return [this.profile, true];
     } else {
@@ -49,13 +49,16 @@ export class UserService {
     }
   }
 
-  updateProfile(user, data) {
+  updateProfile(user: string, data: object): void {
     this.db.object(`/profiles/${user}`).update(data);
   }
 
-  logWith(provider) {
-    provider = provider === 'git' ?
-      new auth.GithubAuthProvider() : '';
+  /*
+  * Autentica usando determinado provedor
+  **/
+  logWith(prov: string): Promise<void> {
+    const provider = prov === 'git' ?
+      new auth.GithubAuthProvider() : null;
     return this.ngAuth.auth.signInWithPopup(provider)
       .then(() => this.goTo(''))
       .catch((err) => {
@@ -63,7 +66,7 @@ export class UserService {
       });
   }
 
-  update(data) {
+  update(data: object): void {
     this.isLogged().subscribe(use => {
       if (use) {
         this.db.object(`users/${use.uid}`).update(data);
@@ -71,12 +74,15 @@ export class UserService {
     });
   }
 
-  create(uid, username) {
+  create(uid: string, username: string): Promise<void> {
     const newUser = {};
     newUser[uid] = username;
     return this.users.update('/', newUser);
   }
 
+  /*
+  * Redireciona usuario para url
+  **/
   goTo(url: string): void {
     this.ngZone.run(() => {
       this.router.navigateByUrl(url);
@@ -88,7 +94,7 @@ export class UserService {
       .then(() => this.goTo(''));
   }
 
-  handleError(error) {
+  handleError(error: string): void {
     console.log(error);
     throw error;
   }
