@@ -56,10 +56,6 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  changeForm(): void {
-    this.isNewUser = !this.isNewUser;
-  }
-
   login(prov): void {
     this.user.logWith(prov)
       .catch(error => {
