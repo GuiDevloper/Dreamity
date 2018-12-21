@@ -2,10 +2,14 @@
   <ul>
     <li routerLink="">Home</li>
     <li routerLink="about">About</li>
-    <li *ngIf="logado; else showLogin" routerLink="/{{ logado }}">
-      {{ logado }} Profile
-    </li>
-    <li *ngIf="logado" (click)="user.Logout()">Log out</li>
+    <ng-container *ngIf="logado; else showLogin">
+      <li routerLink="/{{ logado }}">
+        {{ logado }} Profile
+      </li>
+      <li (click)="user.Logout()">
+        Log out
+      </li>
+    </ng-container>
     <ng-template #showLogin>
       <li routerLink="/login"> Log In </li>
       <li routerLink="/login"> Sign In </li>

@@ -27,6 +27,8 @@ export class PostsComponent implements OnInit {
   profile: object = null;
   progress: number = null;
   newPost: number = null;
+  rtSnap = this.route.snapshot;
+  rtUrl = this.rtSnap.url.toString().split(',');
 
   constructor(private post: PostService,
     private coment: CommentService,
@@ -34,28 +36,26 @@ export class PostsComponent implements OnInit {
     private user: UserService) { }
 
   ngOnInit() {
-    const rtSnap = this.route.snapshot;
-    const rtUrl = rtSnap.url.toString().split(',');
     // SE estiver em um sonho
-    if (rtUrl[1] === 'p') {
+    if (this.rtUrl[1] === 'p') {
       this.commenter = true;
-      this.usua = rtSnap.paramMap.get('profile');
+      this.usua = this.rtSnap.paramMap.get('profile');
       this.isDream = true;
       this.coment.show = false;
       this.loadPosts();
     } else {// Deverá listar
       this.user.isLogged().subscribe(use => {
-        this.usua = rtSnap.paramMap.get('user');
+        this.usua = this.rtSnap.paramMap.get('user');
         // SE logado e estiver no profile
         if (use) {
           const u = this.user.getUser(use.uid);
           if (!u[1]) {
             u[0].subscribe(username => {
               // armazena username
-              this.usua = rtUrl[0] !== '' ? username : '';
+              this.usua = this.rtUrl[0] !== '' ? username : '';
             });
           } else {
-            this.usua = rtUrl[0] !== '' ? u[0] : '';
+            this.usua = this.rtUrl[0] !== '' ? u[0] : '';
           }
         }
         if (!this.usua) {
@@ -86,7 +86,7 @@ export class PostsComponent implements OnInit {
           // guardando autor de cada id
           a['author'] = author;
           // comentarios de cada post
-          this.comments[i] = this.coment.getComents(this.id[i]) || [];
+          this.comments[i] = this.coment.getComents(this.id[i]) || {};
           // guarda Date formatado de cada post
           a['time'] = this.post.getDate(a['time']);
           this.dreams.push(a);
@@ -114,6 +114,7 @@ export class PostsComponent implements OnInit {
   * comm = comentários deste post
   **/
   storeLvls(comm: object) {
+    comm = comm || {lvls: {guidevloper: 10}};
     const lvlLen = this.coment.hasLvls(comm);
     let len = 0;
     // SE tem lvls e tamanho > 0

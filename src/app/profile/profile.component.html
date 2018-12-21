@@ -2,24 +2,26 @@
   <app-navbar></app-navbar>
   <div id="header" *ngIf="profile">
     <div id="avatar" [ngStyle]="{
-      backgroundImage: 'url('+profile.img+')'}"></div>
+      backgroundImage: 'url(' + profile.img + ')'
+    }">
+    </div>
     <div id="data">
       <!--Welcome to My World -->
-      <input type="text" [(ngModel)]="usua"
-        [disabled]="!update" id="username">
+      <input type="text" id="username"
+        [(ngModel)]="usua" [disabled]="!update">
       <input type="text" id="line-info"
         [(ngModel)]="profile.description" [disabled]="!update">
-      <textarea type="text" [(ngModel)]="profile.bio"
-        id="bio" [disabled]="!update">
+      <textarea type="text" id="bio"
+        [(ngModel)]="profile.bio" [disabled]="!update">
       </textarea>
-      <input type="text" [(ngModel)]="profile.img"
-        *ngIf="update" id="imgUrl">
+      <input type="text" id="imgUrl" *ngIf="update"
+        [(ngModel)]="profile.img">
     </div>
     <div *ngIf="myProfile">
-      <button (click)="update = true" *ngIf="!update">
+      <button *ngIf="!update" (click)="update = true">
         Editar Profile
       </button>
-      <button (click)="editProfile()" *ngIf="update">
+      <button *ngIf="update" (click)="editProfile()">
         Salvar Profile
       </button>
     </div>
