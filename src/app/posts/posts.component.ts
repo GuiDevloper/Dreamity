@@ -15,7 +15,7 @@ export class PostsComponent implements OnInit {
   // novo coment
   comment: string;
   // usuário logado
-  usua: string = null;
+  User: string = null;
   // todos autores dos posts
   author: Array<string>;
   // id de cada post
@@ -29,6 +29,8 @@ export class PostsComponent implements OnInit {
   newPost: number = null;
   rtSnap = this.route.snapshot;
   rtUrl = this.rtSnap.url.toString().split(',');
+  // é main-page
+  isMain = this.rtUrl[0] === '';
 
   constructor(private post: PostService,
     private coment: CommentService,
@@ -36,47 +38,44 @@ export class PostsComponent implements OnInit {
     private user: UserService) { }
 
   ngOnInit() {
+    this.user.isLogged().subscribe(use => {
+      // SE logado
+      if (use) {
+        const u = this.user.getUser(use.uid);
+        if (!u[1]) {
+          u[0].subscribe(username => {
+            // armazena username
+            this.User = this.rtUrl[0] !== '' ? username : '';
+          });
+        } else {
+          this.User = this.rtUrl[0] !== '' ? u[0] : '';
+        }
+      }
+    });
+    const paramMap = this.rtSnap.paramMap;
     // SE estiver em um sonho
     if (this.rtUrl[1] === 'p') {
       this.commenter = true;
-      this.usua = this.rtSnap.paramMap.get('profile');
       this.isDream = true;
       this.coment.show = false;
-      this.loadPosts();
-    } else {// Deverá listar
-      this.user.isLogged().subscribe(use => {
-        this.usua = this.rtSnap.paramMap.get('user');
-        // SE logado e estiver no profile
-        if (use) {
-          const u = this.user.getUser(use.uid);
-          if (!u[1]) {
-            u[0].subscribe(username => {
-              // armazena username
-              this.usua = this.rtUrl[0] !== '' ? username : '';
-            });
-          } else {
-            this.usua = this.rtUrl[0] !== '' ? u[0] : '';
-          }
-        }
-        if (!this.usua) {
-          this.usua = '';
-        }
-        this.loadPosts();
-      });
+      this.loadPosts(paramMap.get('profile') || '');
+    } else {
+      // Deverá listar
+      this.loadPosts(paramMap.get('user') || '');
     }
   }
 
   /*
   * Manipula posts separando dados
   **/
-  loadPosts(): void {
+  loadPosts(userUrl): void {
     // carrega posts de user ou de todos
-    this.post.getPosts(this.usua).subscribe(allPosts => {
+    this.post.getPosts(userUrl).subscribe(allPosts => {
       // Limpa armazenadores
       this.dreams = [];
       this.comments = [];
       // Obtendo todos os autores
-      this.author = this.usua === '' ? Object.keys(allPosts) : [this.usua];
+      this.author = userUrl === '' ? Object.keys(allPosts) : [userUrl];
       // percorre autores separando
       for (const author of this.author) {
         const posts = allPosts[author] || allPosts;
@@ -94,12 +93,12 @@ export class PostsComponent implements OnInit {
       }
       if (this.isDream) {
         // index do sonho
-        const iDream = this.route.snapshot.paramMap.get('dream');
+        const iDream = this.rtSnap.paramMap.get('dream');
         // especifica dados para este sonho apenas
         this.id = this.id[iDream];
         this.dreams = [this.dreams[iDream]];
         this.comments[iDream].subscribe(com => this.storeLvls(com));
-        const pro = this.user.getProfile(this.usua);
+        const pro = this.user.getProfile(userUrl);
         if (!pro[1]) {
           pro[0].subscribe(prof => this.profile = prof);
         } else {
@@ -167,7 +166,7 @@ export class PostsComponent implements OnInit {
   getAuthor(id: number): string {
     // SEnao post -> retorna autor pelo array de ids
     return this.isDream ? this.dreams[id]['author'] :
-      (this.isNew(id) ? this.usua : this.dreams[id]['author']);
+      (this.isNew(id) ? this.User : this.dreams[id]['author']);
   }
 
   /*
@@ -176,7 +175,7 @@ export class PostsComponent implements OnInit {
   onPost(): void {
     if (this.post.title && this.post.text) {
       this.newPost = null;
-      this.post.create(this.usua, this.dreams);
+      this.post.create(this.User, this.dreams);
     } else {
       console.log('Preencha todos os campos');
     }
@@ -204,7 +203,7 @@ export class PostsComponent implements OnInit {
   **/
   onComment(): void {
     // usa id do post
-    this.coment.create(this.id.toString(), [this.usua, this.comment]);
+    this.coment.create(this.id.toString(), [this.User, this.comment]);
   }
 
   /*
@@ -235,11 +234,11 @@ export class PostsComponent implements OnInit {
   }
 
   editPost(): void {
-    this.post.update(this.usua, this.id, this.dreams[0]);
+    this.post.update(this.User, this.id, this.dreams[0]);
   }
 
   delPost(): void {
-    this.post.delete(this.usua, this.id.toString())
+    this.post.delete(this.User, this.id.toString())
       .then(() => {
         console.log(this.id, 'post deletado');
         this.user.goTo('');

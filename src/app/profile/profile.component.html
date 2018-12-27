@@ -8,14 +8,17 @@
     <div id="data">
       <!--Welcome to My World -->
       <input type="text" id="username"
-        [(ngModel)]="usua" [disabled]="!update">
+        [(ngModel)]="usua"
+        [disabled]="!update">
       <input type="text" id="line-info"
-        [(ngModel)]="profile.description" [disabled]="!update">
+        [(ngModel)]="profile.description"
+        [disabled]="!update">
       <textarea type="text" id="bio"
-        [(ngModel)]="profile.bio" [disabled]="!update">
+        [(ngModel)]="profile.bio"
+        [disabled]="!update">
       </textarea>
-      <input type="text" id="imgUrl" *ngIf="update"
-        [(ngModel)]="profile.img">
+      <input type="text" id="imgUrl"
+        *ngIf="update" [(ngModel)]="profile.img">
     </div>
     <div *ngIf="myProfile">
       <button *ngIf="!update" (click)="update = true">

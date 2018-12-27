@@ -1,6 +1,6 @@
 <app-navbar *ngIf="isDream"></app-navbar>
-<div id="posts" [ngClass]="{ left: !usua, onePost: isDream }">
-  <form *ngIf="usua && !isDream" (ngSubmit)="onPost()" >
+<div id="posts" [ngClass]="{ left: isMain, onePost: isDream }">
+  <form *ngIf="User && !isDream" (ngSubmit)="onPost()" >
     <button type="button" (click)="writeNew()">Novo Post</button>
     <div *ngIf="newPost === 0">
       <input type="radio" name="rImg"
@@ -31,7 +31,7 @@
         <p *ngIf="isDream" class="author img">
           - {{ getAuthor(i) }}
         </p>
-        <p class="author">{{ parseTitle(i) }}</p>
+        <p *ngIf="!isDream" class="author">{{ parseTitle(i) }}</p>
         <input type="text" class="author" [value]="parseTitle(i, dream.title)"
           placeholder="Entitule seu sonho"
           [disabled]="!isNew(i) && post.btnEdit !== 'Salvar'"
@@ -44,7 +44,7 @@
           [disabled]="!isNew(i) && post.btnEdit !== 'Salvar'"
           (input)="writeNew('text', $event)">
         </textarea>
-        <div *ngIf="!isNew(i)" [ngClass]="{comment: isDream}">
+        <div *ngIf="!isNew(i)" [ngClass]="{ comment: isDream }">
           <form *ngIf="commenter" (ngSubmit)="onComment()">
             <input name="comment" [(ngModel)]="comment"
               placeholder="Digite algo gentil aqui">
@@ -58,25 +58,25 @@
             <ng-template #showDef> 0 comments </ng-template>
           </p>
           <ng-template #showCom>
+            <ng-container *ngIf="User === getAuthor(0)">
+              <button (click)="editPost()">
+                {{ post.btnEdit }}
+              </button>
+              <button (click)="delPost()">Deletar</button>
+            </ng-container>
             <div *ngFor="let com of (coment.show ? comments[1] : []);
-                let i = index" [ngClass]="{showCom: isDream}">
+                let i = index" class="showCom">
               <p> {{ com.author }} -> </p>
               <input type="text" [value]="com.text"
                 placeholder="Seja gentil"
                 (input)="coment.edited = $event.target.value"
                 [disabled]="coment.btnEdit[i] !== 'Salvar'">
               <input type="button" [value]="coment.btnEdit[i] || 'Editar'"
-                *ngIf="usua === com.author"
+                *ngIf="User === com.author"
                 (click)="editCom(i)">
               <input type="button" value="Deletar"
-                *ngIf="usua === com.author"
+                *ngIf="User === com.author"
                 (click)="delCom(i)">
-              <ng-container *ngIf="usua === com.author">
-                <button (click)="editPost()">
-                  {{ post.btnEdit }}
-                </button>
-                <button (click)="delPost()">Deletar</button>
-              </ng-container>
             </div>
           </ng-template>
         </div>
