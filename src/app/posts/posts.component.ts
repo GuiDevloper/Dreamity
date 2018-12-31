@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { PostService } from '../post.service';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from './../user.service';
-import { CommentService } from './../comment.service';
+
+import {
+  PostService,
+  UserService,
+  CommentService
+} from '../core';
 
 @Component({
   selector: 'app-posts',
@@ -68,7 +71,7 @@ export class PostsComponent implements OnInit {
   /*
   * Manipula posts separando dados
   **/
-  loadPosts(userUrl): void {
+  loadPosts(userUrl: string): void {
     // carrega posts de user ou de todos
     this.post.getPosts(userUrl).subscribe(allPosts => {
       // Limpa armazenadores

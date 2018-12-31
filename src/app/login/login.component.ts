@@ -1,8 +1,8 @@
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs';
-import { UserService } from '../user.service';
 import { Component, OnInit } from '@angular/core';
-import { User } from '../user';
+
+import { User, UserService } from '../core';
 
 @Component({
   selector: 'app-login',

@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { UserService } from './../user.service';
-import { User } from '../user';
 import { AngularFireAuth } from 'angularfire2/auth';
+
+import { User, UserService } from '../../core';
 
 @Component({
   selector: 'app-navbar',
