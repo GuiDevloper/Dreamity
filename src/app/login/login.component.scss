@@ -1,14 +1,19 @@
 /* Login form styles */
-body {
-  background-color: gray;
-}
 
 .login {
   text-align: center;
   padding-top: 4rem;
-  height: 100vh;
-  background-color: gray;
 }
-form * {
-  margin: 0 40%;
+form {
+  width: 60%;
+  margin-left: 20%;
+  input {
+    margin: 0 15%;
+  }
+  button {
+    margin: 0 20%;
+  }
+  h4 {
+    margin: 2%;
+  }
 }

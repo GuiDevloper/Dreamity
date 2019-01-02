@@ -34,6 +34,9 @@ export class PostsComponent implements OnInit {
   rtUrl = this.rtSnap.url.toString().split(',');
   // é main-page
   isMain = this.rtUrl[0] === '';
+  showModal = false;
+  warModal = 'ih rapaz';
+  Cdel: number;
 
   constructor(private post: PostService,
     private coment: CommentService,
@@ -241,11 +244,17 @@ export class PostsComponent implements OnInit {
   }
 
   delPost(): void {
+    this.warModal = 'Tens a real certeza apagando este sonho?';
+    this.showModal = true;
+  }
+
+  continueDelP(): void {
     this.post.delete(this.User, this.id.toString())
       .then(() => {
-        console.log(this.id, 'post deletado');
-        this.user.goTo('');
-      });
+        this.warModal = 'Sonho removido daqui';
+        setTimeout(() => this.user.goTo(''), 3000);
+      })
+      .catch(err => this.warModal = err);
   }
 
   editCom(i: number): void {
@@ -257,8 +266,18 @@ export class PostsComponent implements OnInit {
   * @param i = index do comentario
   **/
   delCom(i: number): void {
-    this.coment.delete(this.id.toString(), this.comments[0][i])
-      .then(() => console.log(i, 'deletado'));
+    this.warModal = 'Tens a real certeza apagando este comentário?';
+    this.showModal = true;
+    this.Cdel = i;
+  }
+
+  continueDelC(): void {
+    this.coment.delete(this.id.toString(), this.comments[0][this.Cdel])
+      .then(() => {
+        this.warModal = 'Comentário removido';
+        setTimeout(() => this.showModal = false, 3000);
+      })
+      .catch(err => this.warModal = err);
   }
 
 }

@@ -13,6 +13,8 @@ export class NavbarComponent implements OnInit {
   User;
   logado: any = null;
   mostrar = false;
+  showLog = false;
+  logType: string;
 
   constructor(public user: UserService,
     public ngz: NgZone,
@@ -29,5 +31,10 @@ export class NavbarComponent implements OnInit {
         }
       }
     });
+  }
+
+  openLogin(type: string): void {
+    this.showLog = true;
+    this.logType = type;
   }
 }

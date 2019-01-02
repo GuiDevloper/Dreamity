@@ -84,4 +84,10 @@
     </div>
   </div>
   <app-footer *ngIf="isDream" id="footer"></app-footer>
+  <app-modal
+    [display]="showModal"
+    [warning]="warModal"
+    (showH)="showModal = !showModal"
+    (DelC)="continueDelC()">
+  </app-modal>
 </div>

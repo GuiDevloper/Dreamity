@@ -1,6 +1,6 @@
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { User, UserService } from '../core';
 
@@ -12,8 +12,9 @@ import { User, UserService } from '../core';
 export class LoginComponent implements OnInit {
   User;
   users: Observable<any>;
+  @Input() logType: string;
 
-  isNewUser = true;
+  isNewUser = this.logType === 'Sign';
   username = '';
   email = '';
   password = '';

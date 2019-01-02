@@ -11,8 +11,13 @@
       </li>
     </ng-container>
     <ng-template #showLogin>
-      <li routerLink="/login"> Log In </li>
-      <li routerLink="/login"> Sign In </li>
+      <li (click)="openLogin('Log')"> Log In </li>
+      <li (click)="openLogin('Sign')"> Sign In </li>
     </ng-template>
   </ul>
 </nav>
+<app-modal [display]="showLog"
+  [showLogin]="showLog"
+  [logType]="Log"
+  (showH)="showLog = !showLog">
+</app-modal>
