@@ -1,0 +1,11 @@
+<div class="modal" *ngIf="display">
+  <div class="content">
+    <app-login *ngIf="showLogin" [logType]="logType"></app-login>
+    <form *ngIf="warning">
+      <p> {{ warning }} </p>
+      <button class="btnN" (click)="showH.emit()">Não</button>
+      <button (click)="DelC.emit()">Sim</button>
+    </form>
+    <button (click)="showH.emit()">Fechar</button>
+  </div>
+</div>

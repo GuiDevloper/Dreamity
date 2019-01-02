@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
-import { NavbarComponent, FooterComponent } from './shared';
+import { NavbarComponent, FooterComponent, ModalComponent } from './shared';
 import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import { PostsComponent } from './posts/posts.component';
@@ -22,7 +22,8 @@ import { PostsComponent } from './posts/posts.component';
     FooterComponent,
     ProfileComponent,
     LoginComponent,
-    PostsComponent
+    PostsComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
