@@ -3,12 +3,11 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import {
   AngularFireDatabase,
-  AngularFireList,
-  AngularFireObject
+  AngularFireList
 } from 'angularfire2/database';
 import { auth } from 'firebase/app';
 import { Observable } from 'rxjs';
-import { User } from '../models';
+import { User, Profile } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,7 @@ import { User } from '../models';
 export class UserService {
   users: AngularFireList<{}>;
   user: string;
-  profile: object;
+  profile: Profile;
 
   constructor(public ngAuth: AngularFireAuth,
     private ngZone: NgZone,
@@ -48,7 +47,7 @@ export class UserService {
       return [this.profile, true];
     } else {
       const prof = this.db.object(`/profiles/${user}`).valueChanges();
-      prof.subscribe(pro => this.profile = pro);
+      prof.subscribe((pro: Profile) => this.profile = pro);
       return [prof, false];
     }
   }
@@ -64,7 +63,12 @@ export class UserService {
     const provider = prov === 'git' ?
       new auth.GithubAuthProvider() : null;
     return this.ngAuth.auth.signInWithPopup(provider)
-      .then(() => this.goTo(''))
+      .then(us => {
+        const u: User = us.user;
+        const uName = u.email.substring(0, u.email.indexOf('@'));
+        this.create(u.uid, uName)
+          .then(() => this.goTo('/' + uName));
+      })
       .catch((err) => {
         throw err;
       });
