@@ -7,6 +7,7 @@ import {
 } from 'angularfire2/database';
 import { auth } from 'firebase/app';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { User, Profile } from '../models';
 
 @Injectable({
@@ -28,12 +29,12 @@ export class UserService {
     return this.ngAuth.authState;
   }
 
-  getUser(uid: string): any {
-    if (this.user) {
+  getUser(uid: string, opt: number = 1): any {
+    if (this.user && opt === 1) {
       return [this.user, true];
     } else {
       const userData = this.db.object(`users/${uid}`).valueChanges();
-      userData.subscribe(use => this.user = use.toString());
+      userData.pipe(first()).subscribe(use => this.user = (use || '').toString());
       return [userData, false];
     }
   }
@@ -42,8 +43,8 @@ export class UserService {
   * Puxa dados do profile
   * @param user = username
   **/
-  getProfile(user: string): any {
-    if (this.profile) {
+  getProfile(user: string, opt: number = 1): any {
+    if (this.profile && opt === 1) {
       return [this.profile, true];
     } else {
       const prof = this.db.object(`/profiles/${user}`).valueChanges();
@@ -52,8 +53,16 @@ export class UserService {
     }
   }
 
-  updateProfile(user: string, data: object): void {
-    this.db.object(`/profiles/${user}`).update(data);
+  updateProfile(profile: Profile, old?: string): void {
+    const profs = this.db.list(`/profiles/`);
+    this.update(profile.username);
+    profs.update(profile.username, profile).then(() => {
+      this.goTo('')
+        .then(() => this.goTo('/' + profile.username));
+      if (old && old !== profile.username) {
+        profs.remove(old);
+      }
+    });
   }
 
   /*
@@ -65,19 +74,32 @@ export class UserService {
     return this.ngAuth.auth.signInWithPopup(provider)
       .then(us => {
         const u: User = us.user;
-        const uName = u.email.substring(0, u.email.indexOf('@'));
-        this.create(u.uid, uName)
-          .then(() => this.goTo('/' + uName));
+        const uName = u.email.replace(/[@\W+\.~]/g, '');
+        const old = this.db.object(`/users/${u.uid}`);
+        old.valueChanges().pipe(first()).subscribe(v => {
+          if (v === null) {
+            const newProfile = {
+              username: uName,
+              bio: 'Digite uma descrição mais completamente aqui',
+              description: 'Digite aqui uma descrição de uma linha',
+              img: u.photoURL
+            };
+            this.updateProfile(newProfile);
+          }
+          this.goTo('/' + uName);
+        });
       })
       .catch((err) => {
         throw err;
       });
   }
 
-  update(data: object): void {
+  update(username: string): void {
     this.isLogged().subscribe(use => {
       if (use) {
-        this.db.object(`users/${use.uid}`).update(data);
+        const newUser = {};
+        newUser[use.uid] = username;
+        this.users.update('/', newUser);
       }
     });
   }
@@ -91,9 +113,9 @@ export class UserService {
   /*
   * Redireciona usuario para url
   **/
-  goTo(url: string): void {
-    this.ngZone.run(() => {
-      this.router.navigateByUrl(url);
+  goTo(url: string): Promise<boolean> {
+    return this.ngZone.run(() => {
+      return this.router.navigateByUrl(url);
     });
   }
 
