@@ -77,6 +77,7 @@ export class PostsComponent implements OnInit {
   loadPosts(userUrl: string): void {
     // carrega posts de user ou de todos
     this.post.getPosts(userUrl).subscribe(allPosts => {
+      allPosts = allPosts || {};
       // Limpa armazenadores
       this.dreams = [];
       this.comments = [];
