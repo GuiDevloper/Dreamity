@@ -3,8 +3,10 @@
     <app-login *ngIf="showLogin" [logType]="logType"></app-login>
     <form *ngIf="warning">
       <p> {{ warning }} </p>
-      <button class="btnN" (click)="showH.emit()">Não</button>
-      <button (click)="DelC.emit()">Sim</button>
+      <ng-container *ngIf="warning.includes('Tens')">
+        <button class="btnN" (click)="showH.emit()">Não</button>
+        <button (click)="DelC.emit()">Sim</button>
+      </ng-container>
     </form>
     <button (click)="showH.emit()">Fechar</button>
   </div>

@@ -8,6 +8,8 @@
     <div id="data">
       <!--Welcome to My World -->
       <input type="text" id="username"
+        [ngClass]="{ invalid: inUser }"
+        (input)="testUser()"
         [(ngModel)]="profile.username"
         [disabled]="!update">
       <input type="text" id="line-info"
@@ -30,4 +32,9 @@
     </div>
   </div>
   <app-posts></app-posts>
+  <app-modal
+    [display]="showModal"
+    [warning]="warModal"
+    (showH)="showModal = !showModal">
+  </app-modal>
 </div>

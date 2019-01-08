@@ -13,6 +13,9 @@ export class ProfileComponent implements OnInit {
   update = false;
   myProfile = false;
   atualUsername: string;
+  inUser = false;
+  showModal = false;
+  warModal = 'ih rapaz';
 
   constructor(private user: UserService,
     private route: ActivatedRoute) {}
@@ -43,9 +46,21 @@ export class ProfileComponent implements OnInit {
     this.profile = prof;
   }
 
-  editProfile() {
-    this.user.updateProfile(this.profile, this.atualUsername);
-    this.update = false;
+  editProfile(): void {
+    if (!this.inUser) {
+      this.user.updateProfile(this.profile, this.atualUsername);
+      this.update = false;
+    } else {
+      this.warModal = 'Nome de usuário já em uso!';
+      this.showModal = true;
+    }
+  }
+
+  testUser(): void {
+    setTimeout(() => this.user.userExist(this.profile.username)
+      .then(e => {
+        this.inUser = e.length > 0;
+      }), 250);
   }
 
 }

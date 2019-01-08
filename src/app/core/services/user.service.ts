@@ -74,7 +74,7 @@ export class UserService {
     return this.ngAuth.auth.signInWithPopup(provider)
       .then(us => {
         const u: User = us.user;
-        const uName = u.email.replace(/[@\W+\.~]/g, '');
+        const uName = u.email.replace(/[@\W+\.~]/g, '').toLowerCase();
         const old = this.db.object(`/users/${u.uid}`);
         old.valueChanges().pipe(first()).subscribe(v => {
           if (v === null) {
@@ -108,6 +108,10 @@ export class UserService {
     const newUser = {};
     newUser[uid] = username;
     return this.users.update('/', newUser);
+  }
+
+  userExist(username: string): any {
+    return this.db.list(`/profiles/${username.toLowerCase()}`).valueChanges().pipe(first()).toPromise();
   }
 
   /*
