@@ -1,7 +1,6 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { Component, OnInit } from '@angular/core';
 
-import { User, UserService } from '../../core';
+import { UserService } from '../../core';
 
 @Component({
   selector: 'app-navbar',
@@ -9,26 +8,18 @@ import { User, UserService } from '../../core';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  navli: string[];
-  User;
   logado: any = null;
   mostrar = false;
   showLog = false;
   logType: string;
 
-  constructor(public user: UserService,
-    public ngz: NgZone,
-    public ngAuth: AngularFireAuth) { }
+  constructor(public user: UserService) { }
 
   ngOnInit() {
     this.user.isLogged().subscribe(use => {
       if (use) {
-        const u = this.user.getUser(use.uid);
-        if (!u[1]) {
-          u[0].subscribe(user => this.logado = user);
-        } else {
-          this.logado = u[0];
-        }
+        const u = this.user.getUser(use.uid, 2);
+        this.logado = u[0];
       }
     });
   }

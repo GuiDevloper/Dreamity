@@ -2,7 +2,7 @@
   <ul>
     <li routerLink="">Home</li>
     <li routerLink="about">About</li>
-    <ng-container *ngIf="logado; else showLogin">
+    <ng-container *ngIf="logado | async as logado; else showLogin">
       <li routerLink="/{{ logado }}">
         {{ logado }} Profile
       </li>
