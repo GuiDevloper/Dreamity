@@ -151,10 +151,10 @@ export class PostsComponent implements OnInit {
   * @param i = index do post
   * @param title = titulo do post
   **/
-  parseTitle(i: number, title?: string): string {
+  parseTitle(i: number, title: string = null): string {
     const author = this.dreams[i]['author'];
     return this.isDream && title ? title :
-      (!title ? this.getAuthor(i) + ':.' : title);
+      (title === null ? this.getAuthor(i) + ':.' : title);
   }
 
   /*
@@ -195,13 +195,9 @@ export class PostsComponent implements OnInit {
   **/
   writeNew(input?: string, evt?): void {
     this.post[input] = evt ? evt.target.value : '';
-    if (!this.isDream) {
-      if (this.newPost !== 0) {
-        this.dreams.unshift({title: '', text: '', img: 0});
-        this.newPost = 0;
-      }
-    } else {
-      console.log(this.post.title, this.post.text);
+    if (!this.isDream && this.newPost !== 0) {
+      this.dreams.unshift({title: '', text: '', img: 0});
+      this.newPost = 0;
     }
   }
 
