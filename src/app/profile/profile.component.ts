@@ -57,10 +57,13 @@ export class ProfileComponent implements OnInit {
   }
 
   testUser(): void {
-    setTimeout(() => this.user.userExist(this.profile.username)
+    const newUsername = this.profile.username;
+    if (this.atualUsername !== newUsername) {
+      setTimeout(() => this.user.userExist(newUsername)
       .then(e => {
         this.inUser = e.length > 0;
       }), 250);
+    }
   }
 
 }

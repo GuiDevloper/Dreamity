@@ -1,10 +1,7 @@
 <div id="background">
   <app-navbar></app-navbar>
   <div id="header" *ngIf="profile">
-    <div id="avatar" [ngStyle]="{
-      backgroundImage: 'url(' + profile.img + ')'
-    }">
-    </div>
+    <img id="avatar" [src]="profile.img">
     <div id="data">
       <!--Welcome to My World -->
       <input type="text" id="username"
@@ -22,14 +19,14 @@
       <input type="text" id="imgUrl"
         *ngIf="update" [(ngModel)]="profile.img">
     </div>
-    <div *ngIf="myProfile">
+    <ng-container *ngIf="myProfile">
       <button *ngIf="!update" (click)="update = true">
         Editar Profile
       </button>
       <button *ngIf="update" (click)="editProfile()">
         Salvar Profile
       </button>
-    </div>
+    </ng-container>
   </div>
   <app-posts></app-posts>
   <app-modal
