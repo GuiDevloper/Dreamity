@@ -46,9 +46,9 @@
         font-size: 2rem;
       }
     }
-    p {
-      width: auto;
-      margin-left: 6%;
+    .postText, input.author, .time {
+      min-width: auto;
+      margin-left: 70px;
     }
     .postText, .comment {
       float: left;
@@ -57,7 +57,6 @@
       line-height: 1.7rem;
       padding-right: 0;
       padding-top: 0;
-      margin: 0 0 0 7%;
       width: 50%;
       min-height: 50%;
       text-align: justify;
@@ -67,22 +66,24 @@
       min-height: 50%;
       margin-left: 2%;
     }
-    .showCom {
-      width: 90%;
-    }
     .time {
       padding-bottom: 1%;
       padding-top: 1%;
-      width: 40%;
+      //width: 40%;
     }
     .showCom {
+      width: 90%;
       height: 2rem;
-      margin-left: 6%;
+      padding: 12px 0 20px;
       p {
+        padding: 0;
         float: left;
         margin: 0;
         padding-left: 0;
         padding-right: 0;
+      }
+      button {
+        font-size: 0.8rem;
       }
     }
     #footer {
@@ -95,7 +96,7 @@
       font-size: 1rem;
     }
     form {
-      width: 40%;
+      width: 90%;
       min-height: 50%;
       input {
         width: 90%;
@@ -210,12 +211,49 @@
     color: white;
     font-family: inherit;
     caret-color: white;
+    resize: none;
   }
   input, p, textarea {
     float: left;
   }
+  textarea {
+    width: 70%;
+    &.newCom {
+      width: 100%;
+    }
+  }
 }
+@import '../shared/CSS/breakpoints';
 
+@include for-tablet-portrait {
+  #posts.left {
+    margin-left: 0;
+  }
+  .author {
+    font-size: 1.1rem;
+  }
+  input.author {
+    width: 70% !important;
+  }
+  .onePost {
+    #avatar {
+      margin-left: 40px !important;
+    }
+    .postText, .comment, .showCom {
+      width: 80% !important;
+    }
+    .comment {
+      margin-left: 70px !important;
+    }
+    .comment, .showCom {
+      height: auto !important;
+      min-height: auto !important;
+    }
+    textarea, .showCom p {
+      width: 100% !important;
+    }
+  }
+}
 @media handheld, only screen and (max-width: 767px) {
   .post {
     padding-right: 0px !important;

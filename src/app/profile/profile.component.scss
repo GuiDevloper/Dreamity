@@ -83,9 +83,41 @@ $yellow: #FFEB3B;
 
 button {
   cursor: pointer;
+  background: rgba(31, 31, 31, 0.4);
+  border: 1px solid #240c75;
+  color: white;
+  font-size: 0.8rem;
+  font-family: inherit;
+  font-weight: 600;
 }
 
 .invalid {
   border: 2px solid #F44336 !important;
   border-radius: 5px;
+}
+
+@import '../shared/CSS/breakpoints';
+
+@include for-tablet-portrait {
+  #avatar {
+    margin-left: 40px;
+  }
+  #data {
+    #line-info {
+      width: 70%;
+    }
+    textarea {
+      width: 90%;
+      height: 40%;
+    }
+  }
+  button {
+    margin: 220px 0 0 35%;
+  }
+  #line-info, #bio, #imgUrl {
+    font-size: 0.9rem;
+  }
+  #imgUrl {
+    margin-top: 70px;
+  }
 }
