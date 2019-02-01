@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import {
   PostService,
   UserService,
-  CommentService
+  CommentService,
+  Profile
 } from '../core';
 
 @Component({
@@ -27,7 +28,7 @@ export class PostsComponent implements OnInit {
   comments: Array<any>;
   commenter = false;
   isDream = false;
-  profile: object = null;
+  profile: Profile = null;
   progress: number = null;
   newPost: number = null;
   rtSnap = this.route.snapshot;
@@ -104,13 +105,19 @@ export class PostsComponent implements OnInit {
         // especifica dados para este sonho apenas
         this.id = this.id[iDream];
         this.dreams = [this.dreams[iDream]];
-        this.comments[iDream].subscribe(com => this.storeLvls(com));
-        const pro = this.user.getProfile(userUrl);
-        if (!pro[1]) {
-          pro[0].subscribe(prof => this.profile = prof);
-        } else {
-          this.profile = pro[0];
-        }
+        this.post.restart(this.dreams);
+        this.comments[iDream].subscribe(com => {
+          const pro = this.user.getProfile(userUrl);
+          if (!pro[1]) {
+            pro[0].subscribe(prof => {
+              this.profile = prof;
+              this.storeLvls(com);
+            });
+          } else {
+            this.profile = pro[0];
+            this.storeLvls(com);
+          }
+        });
       }
     });
   }
@@ -130,6 +137,7 @@ export class PostsComponent implements OnInit {
     } else {
       len = +lvlLen[1];
     }
+    this.coment.lvl = comm['lvls'][this.profile.username];
     this.comments = [
       Object.keys(comm).slice(0, len),
       Object.values(comm).slice(0, len)
@@ -238,6 +246,9 @@ export class PostsComponent implements OnInit {
 
   editPost(): void {
     this.post.update(this.User, this.id, this.dreams[0]);
+    /* ativar em produção
+    console.log(this.comments[1]);
+    console.clear();*/
   }
 
   delPost(): void {
