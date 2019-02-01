@@ -69,6 +69,11 @@ export class PostService {
       });
   }
 
+  restart(dream: object): void {
+    this.title = dream['title'];
+    this.text = dream['text'];
+  }
+
   /*
   * Transforma de timestamp para dd/mm/aaaa
   * @param time = timestamp do post

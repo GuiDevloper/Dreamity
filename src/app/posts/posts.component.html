@@ -18,11 +18,11 @@
       </div>
       <div class="text">
         <div *ngIf="isDream" class="dreamLvl">
-          <p>Great Imagination - Will Be Realised</p>
+          <p>Grande Imaginação -> Será Realizado</p>
           <progress value='{{progress}}' max="20">
             {{ progress }}
           </progress>
-          <input type="range" min="0" max="20" [(ngModel)]="lvl"
+          <input type="range" min="0" max="20" [(ngModel)]="coment.lvl"
             (change)="coment.updateLvl(id)">
         </div>
         <div id="avatar" *ngIf="isDream && profile"
@@ -44,10 +44,16 @@
           [disabled]="!isNew(i) && post.btnEdit !== 'Salvar'"
           (input)="writeNew('text', $event)">
         </textarea>
+        <ng-container *ngIf="isDream && User === getAuthor(0)">
+          <button (click)="editPost()">
+            {{ post.btnEdit }}
+          </button>
+          <button (click)="delPost()">Deletar</button>
+        </ng-container>
         <div *ngIf="!isNew(i)" [ngClass]="{ comment: isDream }">
           <form *ngIf="commenter" (ngSubmit)="onComment()">
-            <input name="comment" [(ngModel)]="comment"
-              placeholder="Digite algo gentil aqui">
+            <textarea name="comment" class="newCom" [(ngModel)]="comment"
+              placeholder="Digite algo gentil aqui"></textarea>
             <button type="reset" name="reset">Limpar</button>
             <button type="submit" name="enter">Cadastrar</button>
           </form>
@@ -58,25 +64,18 @@
             <ng-template #showDef> 0 comments </ng-template>
           </p>
           <ng-template #showCom>
-            <ng-container *ngIf="User === getAuthor(0)">
-              <button (click)="editPost()">
-                {{ post.btnEdit }}
-              </button>
-              <button (click)="delPost()">Deletar</button>
-            </ng-container>
             <div *ngFor="let com of (coment.show ? comments[1] : []);
                 let i = index" class="showCom">
-              <p> {{ com.author }} -> </p>
-              <input type="text" [value]="com.text"
+              <p> {{ com.author }}: </p>
+              <textarea [value]="com.text"
                 placeholder="Seja gentil"
                 (input)="coment.edited = $event.target.value"
-                [disabled]="coment.btnEdit[i] !== 'Salvar'">
-              <input type="button" [value]="coment.btnEdit[i] || 'Editar'"
+                [disabled]="coment.btnEdit[i] !== 'Salvar'"></textarea>
+              <button [value]="coment.btnEdit[i] || 'Editar'"
                 *ngIf="User === com.author"
-                (click)="editCom(i)">
-              <input type="button" value="Deletar"
-                *ngIf="User === com.author"
-                (click)="delCom(i)">
+                (click)="editCom(i)">{{ coment.btnEdit[i] || 'Editar' }}</button>
+              <button *ngIf="User === com.author"
+                (click)="delCom(i)">Deletar</button>
             </div>
           </ng-template>
         </div>
