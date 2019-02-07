@@ -162,7 +162,7 @@ export class PostsComponent implements OnInit {
   parseTitle(i: number, title: string = null): string {
     const author = this.dreams[i]['author'];
     return this.isDream && title ? title :
-      (title === null ? this.getAuthor(i) + ':.' : title);
+      (title === null ? this.getAuthor(i) + ':' : title);
   }
 
   /*
@@ -170,8 +170,9 @@ export class PostsComponent implements OnInit {
   * @param post = texto do post
   */
   limitText(post: string): string {
-    return (this.isDream || post.length < 100) ?
-      post : post.substring(0, 100) + '..';
+    const leng = window.innerWidth < 330 ? 80 : 100;
+    return (this.isDream || post.length < leng) ?
+      post : post.substring(0, leng) + '. . .';
   }
 
   /*

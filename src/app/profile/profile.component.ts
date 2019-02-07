@@ -48,7 +48,10 @@ export class ProfileComponent implements OnInit {
 
   editProfile(): void {
     if (!this.inUser) {
-      this.user.updateProfile(this.profile, this.atualUsername);
+      const prof = this.profile;
+      prof.bio = prof.bio.substr(0, 200);
+      prof.description = prof.description.substr(0, 40);
+      this.user.updateProfile(prof, this.atualUsername);
       this.update = false;
     } else {
       this.warModal = 'Nome de usuário já em uso!';
