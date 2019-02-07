@@ -1,6 +1,6 @@
 /* Main page styles */
 #main {
-  width: 100%;
+  width: 101%;
   margin: 0;
   background-color: #2e1015;
   padding-bottom: .5%;
@@ -34,6 +34,17 @@
 }
 .grid {
   padding-top: 40vh;
+}
+
+@import '../shared/CSS/breakpoints';
+
+@include for-phone {
+  .title {
+    font-size: 9vw !important;
+  }
+  .subtitle {
+    font-size: 1rem !important;
+  }
 }
 
 /*@keyframes flicker {

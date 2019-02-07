@@ -2,7 +2,7 @@
 
 #background {
   background-color: #404040;
-  width: 100%;
+  width: 101%;
   min-height: 100vh;
   background: url(https://i.pinimg.com/564x/55/23/59/552359232b495740c7a221538bd3d23b.jpg);
 }
@@ -20,75 +20,81 @@
   border-radius: 50px;
 }
 
-#avatar {
+.avatar {
   height: 120px;
   width: 120px;
   border-radius: 100%;
-  margin: 40px 0 40px 60px;
+  margin: 40px 0 0 40px;
   float: left;
   background-position: center;
   background-size: 100%;
 }
 
 $yellow: #FFEB3B;
-#data {
+.data {
   padding: 40px;
   color: $yellow;
-  p, textarea, input {
-    font-weight: bold;
-    text-align: justify;
-    float: left;
-    color: inherit;
-    background: transparent;
-    border: 0;
-    font-family: inherit;
-    font-weight: 600;
-    text-shadow: 0px 0px 10px $yellow;
-  }
 }
-
-#username {
-  padding: 15px 20px;
+p, textarea, input {
+  font-weight: bold;
+  text-align: justify;
+  float: left;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  font-family: inherit;
+  text-shadow: 0px 0px 10px $yellow;
+}
+.username {
+  margin: 15px 20px;
   font-size: 2rem;
   width: 60%;
-  color: rgb(255, 66, 66) !important;
-  text-shadow: 0px 0px 20px rgba(255, 0, 0, 0.8) !important;
+  color: rgb(255, 66, 66);
+  text-shadow: 0px 0px 20px rgba(255, 0, 0, 0.8);
 }
 
-#line-info,
-#bio,
-#imgUrl {
+.line-info,
+.bio,
+.imgUrl {
   font-size: 1.1rem;
   float: left;
 }
 
-#line-info {
-  padding: 0 0 0 20px;
+.line-info {
+  margin: 0 0 30px 20px;
   width: 60%;
   color: gold;
 }
 
-#bio, #imgUrl {
-  width: 50%;
-  position: absolute;
-  top: 45%;
-  left: 5%;
-  height: 20%;
-  resize: none;
-}
-#imgUrl {
-  top: 70%;
+.bio, .imgUrl {
   height: auto;
+  width: 90%;
+  white-space: pre-line;
+}
+.bio {
+  margin: 30px 25% 0 0;
+  max-width: 800px;
+}
+.imgUrl {
+  margin-top: 15px;
 }
 
 button {
   cursor: pointer;
-  background: rgba(31, 31, 31, 0.4);
+  background: rgba(36, 36, 36, 0.6);
   border: 1px solid #240c75;
   color: white;
   font-size: 0.8rem;
   font-family: inherit;
   font-weight: 600;
+  margin: 10px 80% 0 40px;
+  width: 20%;
+  max-width: 150px;
+}
+
+textarea {
+  height: 130px;
+  resize: none;
 }
 
 .invalid {
@@ -98,26 +104,39 @@ button {
 
 @import '../shared/CSS/breakpoints';
 
-@include for-tablet-portrait {
-  #avatar {
-    margin-left: 40px;
-  }
-  #data {
-    #line-info {
-      width: 70%;
-    }
-    textarea {
-      width: 90%;
-      height: 40%;
-    }
-  }
-  button {
-    margin: 220px 0 0 35%;
-  }
-  #line-info, #bio, #imgUrl {
+@include for-phone-tablet {
+  .line-info, .bio, .imgUrl {
     font-size: 0.9rem;
   }
-  #imgUrl {
-    margin-top: 70px;
+}
+
+@include for-phone {
+  #header {
+    width: 97%;
+    margin: 55px 1.5%;
+    background-size: cover;
+  }
+  .avatar {
+    height: 100px;
+    width: 100px;
+    margin: 10px 0 0 10px;
+  }
+  .data {
+    padding: 20px 0 0 0;
+  }
+  .username {
+    width: 50%;
+    margin: 20px 5px;
+    font-size: 7vw;
+  }
+  .line-info, .bio, .imgUrl {
+    width: 90%;
+    padding: 0;
+    margin: 5% 5% 0;
+    height: auto;
+  }
+  button {
+    margin: 0 35%;
+    width: 30%;
   }
 }

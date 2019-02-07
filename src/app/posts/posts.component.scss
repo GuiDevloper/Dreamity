@@ -1,256 +1,324 @@
-#posts {
-  margin-top: 60vh;
+.posts {
+  margin-top: 490px;
   display: inline-block;
   color: white;
   text-align: justify;
   min-height: 30vh;
-  &.left {
-    margin-left: 10%;
-    margin-top: 40vh;
-    min-height: 50vh;
-  }
-  &.onePost {
-    width: 100%;
-    margin: 0;
-    background: #464646;
-    min-height: 100vh;
-    .grid {
-      margin: 0;
-      max-width: 100%;
-      margin-top: 2.2rem;
-    }
-    .post {
-      width: 100% !important;
-      height: 85vh !important;
-      text-align: justify;
-      cursor: initial;
-    }
-    .blur {
-      top: 0%;
-      right: 0%;
-      left: 0%;
-      height: 100%;
-      width: 99%;
-    }
-    .text {
-      height: 100%;
-      width: 100%;
-      overflow: hidden auto;
-      padding: 0px;
-      padding-right: 5px;
-    }
-    .author {
-      margin: 15px 0 10px 6%;
-      &.img {
-        margin: 80px 0 50px 0;
-        font-size: 2rem;
-      }
-    }
-    .postText, input.author, .time {
-      min-width: auto;
-      margin-left: 70px;
-    }
-    .postText, .comment {
-      float: left;
-    }
-    .postText {
-      line-height: 1.7rem;
-      padding-right: 0;
-      padding-top: 0;
-      width: 50%;
-      min-height: 50%;
-      text-align: justify;
-    }
-    .comment {
-      width: 40%;
-      min-height: 50%;
-      margin-left: 2%;
-    }
-    .time {
-      padding-bottom: 1%;
-      padding-top: 1%;
-      //width: 40%;
-    }
-    .showCom {
-      width: 90%;
-      height: 2rem;
-      padding: 12px 0 20px;
-      p {
-        padding: 0;
-        float: left;
-        margin: 0;
-        padding-left: 0;
-        padding-right: 0;
-      }
-      button {
-        font-size: 0.8rem;
-      }
-    }
-    #footer {
-      position: fixed;
-      width: 100%;
-    }
-    input, button, input::placeholder {
-      color: white;
-      font-family: inherit;
-      font-size: 1rem;
-    }
-    form {
-      width: 90%;
-      min-height: 50%;
-      input {
-        width: 90%;
-        height: 1.5rem;
-        border: 0;
-        background: transparent;
-      }
-    }
-    button {
-      background: rgba(31, 31, 31, 0.4);
-      border: 1px solid #8c0000;
-      cursor: pointer;
-    }
-    #avatar {
-      height: 120px;
-      width: 120px;
-      border-radius: 100%;
-      margin: 40px 0 0 60px;
-      float: left;
-      background-position: center;
-      background-size: 100%;
-    }
-    .dreamLvl {
-      height: 50%;
-      width: 100px;
-      position: fixed;
-      margin-top: 350px;
-      left: -60px;
-      input, progress {
-        transform: rotate(-90deg);
-        margin: 0;
-        width: 300px;
-        height: 15px;
-        right: -180px;
-        top: 10px;
-        position: absolute;
-        background: darkred;
-      }
-      input {
-        height: 0px;
-        margin-top: 8px;
-      }
-      p {
-        transform: rotate(-90deg);
-        margin-left: -150px;
-        width: 500px;
-        letter-spacing: 3px;
-        text-align: center;
-        font-weight: 600;
-        color: #d4d4d4;
-      }
-    }
-  }
+  margin-right: 2%;
 }
-
+.left {
+  margin-left: 10%;
+  margin-top: 40vh;
+  min-height: 50vh;
+}
 .post {
-  height: 200px;
+  height: 180px;
   border-radius: 3px;
   margin-bottom: 10px;
   position: relative;
   padding-right: 20px !important;
   cursor: pointer;
-  .blur {
-    background: url(https://i.pinimg.com/564x/26/94/f8/2694f86….jpg);
-    position: absolute;
-    background-position: center;
-    filter: blur(3px);
-    top: 1.1%;
-    left: 0.5%;
-    background-size: cover;
-    height: 195px;
-    width: 96.4%;
+}
+p {
+  padding: 0 0 5px;
+}
+.author {
+  font-size: 1.1rem;
+}
+p.author,
+.time {
+  font-size: 12px;
+}
+input.author {
+  width: 100%;
+}
+.onePost {
+  width: 100%;
+  margin: 0;
+  background: #464646;
+  min-height: 100vh;
+  padding-right: 1%;
+  .grid {
+    margin: 0;
+    max-width: 100%;
+    margin-top: 2.2rem;
   }
-  p {
-    padding: 15px 0;
+  .post {
+    width: 100%;
+    height: 85vh;
+    text-align: justify;
+    cursor: initial;
+  }
+  .blur {
+    top: 0%;
+    right: 0%;
+    left: 0%;
+    height: 100%;
+    width: 98%;
   }
   .text {
-    position: relative;
-    background: rgba(66, 13, 13, 0.75);
-    border-radius: inherit;
-    box-shadow: 5px 5px rgba(17, 17, 17, 0.8);
-    height: 165px;
-    padding: 15px;
-    div {
-      float: left;
-      width: 100%;
-    }
+    height: 100%;
+    width: 100%;
+    overflow: hidden auto;
+    padding: 0px;
+    padding-right: 5px;
   }
   .author {
-    font-size: 1.3rem;
-    font-weight: 600;
-    padding-bottom: 0;
-    width: auto;
-    padding: 0;
+    margin: 15px 0 10px 6%;
+    &.img {
+      margin: 80px 0 50px 0;
+      font-size: 2rem;
+      text-decoration: underline;
+    }
   }
-  input.author {
-    width: 75%;
-  }
+  .postText,
+  input.author,
   .time {
-    font-size: 0.9rem;
-    width: 100%;
+    min-width: auto;
+    margin-left: 60px;
   }
-  .postText {
-    font-size: 1rem;
-    padding-top: 1%;
-    width: 100%;
-    resize: none;
-  }
-  input, textarea {
-    border: 0;
-    background: transparent;
-    color: white;
-    font-family: inherit;
-    caret-color: white;
-    resize: none;
-  }
-  input, p, textarea {
+  .postText,
+  .comment {
     float: left;
   }
-  textarea {
-    width: 70%;
-    &.newCom {
+  .postText {
+    line-height: 1.7rem;
+    width: 80%;
+    text-align: justify;
+    white-space: pre-line;
+    height: auto;
+    padding: 15px 0 25px;
+  }
+  .comment {
+    min-height: auto;
+    width: 90%;
+    margin: 50px 0 0 60px;
+  }
+  .time {
+    padding: 1px 0;
+    //width: 40%;
+  }
+  .showCom {
+    width: 90%;
+    height: auto;
+    padding: 15px 0;
+    p,
+    textarea {
       width: 100%;
+    }
+    p {
+      padding: 0;
+      float: left;
+      margin: 0;
+    }
+    button,
+    .comParagraf {
+      font-size: 0.8rem;
+    }
+  }
+  .footer {
+    position: fixed;
+    width: 100%;
+  }
+  input,
+  button,
+  input::placeholder {
+    color: white;
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  form {
+    width: 90%;
+    min-height: 50%;
+    input {
+      width: 90%;
+      height: 1.5rem;
+      border: 0;
+      background: transparent;
+    }
+  }
+  button {
+    background: rgba(31, 31, 31, 0.4);
+    border: 1px solid #8c0000;
+    cursor: pointer;
+  }
+  .avatar {
+    height: 120px;
+    width: 120px;
+    border-radius: 100%;
+    margin: 40px 0 0 40px;
+    float: left;
+    background-position: center;
+    background-size: 100%;
+  }
+}
+
+.dreamLvl {
+  height: 50%;
+  width: 100px;
+  position: fixed;
+  margin-top: 350px;
+  left: -65px;
+  input,
+  progress {
+    transform: rotate(-90deg);
+    margin: 0;
+    width: 300px;
+    height: 15px;
+    right: -175px;
+    top: 10px;
+    position: absolute;
+    background: darkred;
+  }
+  input {
+    height: 0px;
+    margin: 8px 0;
+  }
+  p {
+    transform: rotate(-90deg);
+    margin-left: -150px;
+    width: 500px;
+    letter-spacing: 1px;
+    text-align: center;
+    font-weight: 600;
+    color: #d4d4d4;
+  }
+}
+
+.blur {
+  background: url(https://i.pinimg.com/564x/26/94/f8/2694f86….jpg);
+  position: absolute;
+  background-position: center;
+  filter: blur(3px);
+  top: 1.1%;
+  left: 0.5%;
+  background-size: cover;
+  height: inherit;
+  width: 96%;
+}
+.text {
+  position: relative;
+  background: rgba(66, 13, 13, 0.75);
+  border-radius: inherit;
+  box-shadow: 5px 5px rgba(17, 17, 17, 0.8);
+  height: inherit;
+  padding: 15px;
+  div:not(.dreamLvl) {
+    float: left;
+    width: 80%;
+  }
+}
+.author {
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding-bottom: 0;
+  width: auto;
+  padding: 0;
+}
+.time {
+  font-size: 0.9rem;
+  width: 100%;
+}
+.postText {
+  font-size: 1rem;
+  padding-top: 1%;
+  width: 100%;
+  resize: none;
+  height: 70px;
+}
+input,
+textarea {
+  border: 0;
+  background: transparent;
+  color: white;
+  font-family: inherit;
+  caret-color: white;
+  resize: none;
+}
+input,
+p,
+textarea {
+  float: left;
+}
+.newCom {
+  width: 100%;
+}
+
+@import "../shared/CSS/breakpoints";
+
+@include for-phone-tablet {
+  .onePost {
+    .postText {
+      width: 75%;
     }
   }
 }
-@import '../shared/CSS/breakpoints';
-
 @include for-tablet-portrait {
-  #posts.left {
+  .posts.left {
     margin-left: 0;
   }
-  .author {
-    font-size: 1.1rem;
+}
+
+@include for-phone {
+  .posts {
+    .grid {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    &:not(.onePost) .postText {
+      height: 100px;
+    }
   }
-  input.author {
-    width: 70% !important;
+  .left {
+    margin-left: 0;
+    margin-top: 30vh;
+  }
+  .post {
+    height: 210px;
+  }
+  .postText {
+    font-size: 0.9rem;
   }
   .onePost {
-    #avatar {
-      margin-left: 40px !important;
+    .post {
+      height: 82vh;
     }
-    .postText, .comment, .showCom {
-      width: 80% !important;
+    .avatar {
+      height: 100px;
+      width: 100px;
+    }
+    .postText,
+    input.author,
+    .time {
+      margin-left: 50px;
+    }
+    .author.img {
+      font-size: 6vw;
+      margin: -10px 0 0;
+      width: 100%;
+      text-align: center;
     }
     .comment {
-      margin-left: 70px !important;
+      margin-left: 50px;
     }
-    .comment, .showCom {
-      height: auto !important;
-      min-height: auto !important;
+    .showCom p {
+      width: 95%;
     }
-    textarea, .showCom p {
-      width: 100% !important;
+  }
+  .dreamLvl {
+    height: 50%;
+    width: 100px;
+    position: fixed;
+    margin-top: 280px;
+    left: -75px;
+    font-size: 0.8rem;
+    progress {
+      width: 250px;
+      height: 15px;
+      right: -145px;
+    }
+    input {
+      margin: 15px 5px;
     }
   }
 }
@@ -259,6 +327,6 @@
     padding-right: 0px !important;
   }
   .blur {
-    width: 100% !important;
+    width: 100%;
   }
 }
