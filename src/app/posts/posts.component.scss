@@ -29,7 +29,7 @@ p.author,
 .time {
   font-size: 12px;
 }
-input.author {
+.author.title {
   width: 100%;
 }
 .onePost {
@@ -63,6 +63,9 @@ input.author {
     padding: 0px;
     padding-right: 5px;
   }
+  .author.title, .time {
+    width: 80%;
+  }
   .author {
     margin: 15px 0 10px 6%;
     &.img {
@@ -72,7 +75,7 @@ input.author {
     }
   }
   .postText,
-  input.author,
+  .author.title,
   .time {
     min-width: auto;
     margin-left: 60px;
@@ -209,11 +212,12 @@ input.author {
   }
 }
 .author {
-  font-size: 1.3rem;
   font-weight: 600;
-  padding-bottom: 0;
   width: auto;
   padding: 0;
+}
+.author.title {
+  font-size: 1.3rem;
 }
 .time {
   font-size: 0.9rem;
@@ -288,7 +292,7 @@ textarea {
       width: 100px;
     }
     .postText,
-    input.author,
+    .author.title,
     .time {
       margin-left: 50px;
     }

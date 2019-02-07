@@ -1,5 +1,5 @@
 <app-navbar *ngIf="isDream"></app-navbar>
-<div id="posts" [ngClass]="{ left: isMain, onePost: isDream }">
+<div class="posts" [ngClass]="{ left: isMain, onePost: isDream }">
   <form *ngIf="User && !isDream" (ngSubmit)="onPost()" >
     <button type="button" (click)="writeNew()">Novo Post</button>
     <div *ngIf="newPost === 0">
@@ -17,7 +17,14 @@
       }">
       </div>
       <div class="text">
-        <div *ngIf="isDream" class="dreamLvl">
+        <ng-container *ngIf="isDream && User === getAuthor(0)">
+          <button [title]="post.btnEdit + ' Post'" (click)="editPost()">
+            {{ post.btnEdit }}
+          </button>
+          <button title="Remover Post" (click)="delPost()">Deletar</button>
+        </ng-container>
+        <div *ngIf="isDream" class="dreamLvl"
+          title="Mostre sua opinião geral sobre o sonho">
           <p>Grande Imaginação -> Será Realizado</p>
           <progress value='{{progress}}' max="20">
             {{ progress }}
@@ -25,37 +32,38 @@
           <input type="range" min="0" max="20" [(ngModel)]="coment.lvl"
             (change)="coment.updateLvl(id)">
         </div>
-        <div id="avatar" *ngIf="isDream && profile"
-          [ngStyle]="{ backgroundImage: 'url(' + profile.img + ')' }">
-        </div>
+        <img class="avatar" *ngIf="isDream && profile" [src]="profile.img">
         <p *ngIf="isDream" class="author img">
-          - {{ getAuthor(i) }}
+          {{ getAuthor(i) }}:
         </p>
         <p *ngIf="!isDream" class="author">{{ parseTitle(i) }}</p>
-        <input type="text" class="author" [value]="parseTitle(i, dream.title)"
-          placeholder="Entitule seu sonho"
-          [disabled]="!isNew(i) && post.btnEdit !== 'Salvar'"
-          (input)="writeNew('title', $event)">
-        <p class="time">
-          {{ dream.time }}
-        </p>
-        <textarea class="postText" [value]="limitText(dream.text)"
-          placeholder="Digite o que tens sonhado"
-          [disabled]="!isNew(i) && post.btnEdit !== 'Salvar'"
-          (input)="writeNew('text', $event)">
-        </textarea>
-        <ng-container *ngIf="isDream && User === getAuthor(0)">
-          <button (click)="editPost()">
-            {{ post.btnEdit }}
-          </button>
-          <button (click)="delPost()">Deletar</button>
+        <ng-container *ngIf="!isNew(i) && post.btnEdit !== 'Salvar';
+          else postTxtA">
+          <p class="author title">{{ parseTitle(i, dream.title) }}</p>
+          <p class="time">{{ dream.time }}</p>
+          <p class="postText">{{ limitText(dream.text) }}</p>
         </ng-container>
+        <ng-template #postTxtA>
+          <input type="text" class="author"
+            [value]="parseTitle(i, dream.title)"
+            placeholder="Entitule seu sonho"
+            (input)="writeNew('title', $event)">
+          <p class="time">{{ dream.time }}</p>
+          <textarea class="postText" [value]="limitText(dream.text)"
+            placeholder="Digite o que tens sonhado"
+            (input)="writeNew('text', $event)">
+          </textarea>
+        </ng-template>
         <div *ngIf="!isNew(i)" [ngClass]="{ comment: isDream }">
           <form *ngIf="commenter" (ngSubmit)="onComment()">
             <textarea name="comment" class="newCom" [(ngModel)]="comment"
               placeholder="Digite algo gentil aqui"></textarea>
-            <button type="reset" name="reset">Limpar</button>
-            <button type="submit" name="enter">Cadastrar</button>
+            <button type="reset" name="reset" title="Limpar Novo Comentário">
+              Limpar
+            </button>
+            <button type="submit" name="enter" title="Cadastrar Novo Comentário">
+              Cadastrar
+            </button>
           </form>
           <p *ngIf="!isDream; else showCom">
             <ng-container *ngIf="of(comments, i) | async as com; else showDef">
@@ -67,22 +75,34 @@
             <div *ngFor="let com of (coment.show ? comments[1] : []);
                 let i = index" class="showCom">
               <p> {{ com.author }}: </p>
-              <textarea [value]="com.text"
-                placeholder="Seja gentil"
-                (input)="coment.edited = $event.target.value"
-                [disabled]="coment.btnEdit[i] !== 'Salvar'"></textarea>
-              <button [value]="coment.btnEdit[i] || 'Editar'"
-                *ngIf="User === com.author"
-                (click)="editCom(i)">{{ coment.btnEdit[i] || 'Editar' }}</button>
-              <button *ngIf="User === com.author"
-                (click)="delCom(i)">Deletar</button>
+              <div>
+                <button [title]="coment.btnEdit[i] + ' Comentário'"
+                  [value]="coment.btnEdit[i] || 'Editar'"
+                  *ngIf="User === com.author"
+                  (click)="editCom(i)">
+                  {{ coment.btnEdit[i] || 'Editar' }}
+                </button>
+                <button *ngIf="User === com.author"
+                  title="Remover Comentário"
+                  (click)="delCom(i)">Deletar</button>
+              </div>
+              <p *ngIf="coment.btnEdit[i] !== 'Salvar'; else comTxtA"
+                class="comParagraf">
+                {{ com.text }}
+              </p>
+              <ng-template #comTxtA>
+                <textarea [value]="com.text"
+                  placeholder="Seja gentil"
+                  (input)="coment.edited = $event.target.value">
+                </textarea>
+              </ng-template>
             </div>
           </ng-template>
         </div>
       </div>
     </div>
   </div>
-  <app-footer *ngIf="isDream" id="footer"></app-footer>
+  <app-footer *ngIf="isDream" class="footer"></app-footer>
   <app-modal
     [display]="showModal"
     [warning]="warModal"

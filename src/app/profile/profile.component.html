@@ -1,23 +1,26 @@
 <div id="background">
   <app-navbar></app-navbar>
   <div id="header" *ngIf="profile">
-    <img id="avatar" [src]="profile.img">
-    <div id="data">
+    <img class="avatar" [src]="profile.img">
+    <div class="data">
       <!--Welcome to My World -->
-      <input type="text" id="username"
-        [ngClass]="{ invalid: inUser }"
-        (input)="testUser()"
-        [(ngModel)]="profile.username"
-        [disabled]="!update">
-      <input type="text" id="line-info"
-        [(ngModel)]="profile.description"
-        [disabled]="!update">
-      <textarea type="text" id="bio"
-        [(ngModel)]="profile.bio"
-        [disabled]="!update">
-      </textarea>
-      <input type="text" id="imgUrl"
-        *ngIf="update" [(ngModel)]="profile.img">
+      <ng-container *ngIf="!update; else ProfileTxtA">
+        <p class="username">{{ profile.username }}</p>
+        <p class="line-info">{{ profile.description }}</p>
+        <p class="bio">{{ profile.bio }}</p>
+      </ng-container>
+      <ng-template #ProfileTxtA>
+        <input type="text" class="username"
+          [ngClass]="{ invalid: inUser }"
+          (input)="testUser()"
+          [(ngModel)]="profile.username">
+        <input type="text" class="line-info"
+          [(ngModel)]="profile.description" maxlength="40">
+        <textarea class="bio" [(ngModel)]="profile.bio" maxlength="200">
+        </textarea>
+        <input type="text" class="imgUrl"
+          [(ngModel)]="profile.img">
+      </ng-template>
     </div>
     <ng-container *ngIf="myProfile">
       <button *ngIf="!update" (click)="update = true">
