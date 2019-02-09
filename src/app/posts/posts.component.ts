@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import {
@@ -38,6 +38,8 @@ export class PostsComponent implements OnInit {
   showModal = false;
   warModal = 'ih rapaz';
   Cdel: number;
+  @Output() loaded: EventEmitter<boolean> = new EventEmitter<boolean>();
+  isLoad = false;
 
   constructor(private post: PostService,
     private coment: CommentService,
@@ -107,6 +109,7 @@ export class PostsComponent implements OnInit {
         this.dreams = [this.dreams[iDream]];
         this.post.restart(this.dreams);
         this.comments[iDream].subscribe(com => {
+          this.isLoad = true;
           const pro = this.user.getProfile(userUrl);
           if (!pro[1]) {
             pro[0].subscribe(prof => {
@@ -118,6 +121,8 @@ export class PostsComponent implements OnInit {
             this.storeLvls(com);
           }
         });
+      } else {
+        this.loaded.emit();
       }
     });
   }
@@ -143,6 +148,7 @@ export class PostsComponent implements OnInit {
       Object.values(comm).slice(0, len)
     ];
     this.coment.show = true;
+    this.loaded.emit();
   }
 
   /*

@@ -1,3 +1,4 @@
+<app-loading *ngIf="isDream" [loaded]="isLoad"></app-loading>
 <app-navbar *ngIf="isDream"></app-navbar>
 <div class="posts" [ngClass]="{ left: isMain, onePost: isDream }">
   <form *ngIf="User && !isDream" (ngSubmit)="onPost()" >

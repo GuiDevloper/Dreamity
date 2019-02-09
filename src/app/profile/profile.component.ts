@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   inUser = false;
   showModal = false;
   warModal = 'ih rapaz';
+  loaded = false;
 
   constructor(private user: UserService,
     private route: ActivatedRoute) {}
@@ -33,7 +34,10 @@ export class ProfileComponent implements OnInit {
         // Armazena se este usuario está no profile
         u[0].subscribe((user: string) => {
           this.setIsMy(user === this.atualUsername);
+          this.loaded = true;
         });
+      } else {
+        this.loaded = true;
       }
     });
   }
