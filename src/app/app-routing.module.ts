@@ -8,7 +8,7 @@ import { PostsComponent } from './posts/posts.component';
 const routes: Routes = [
   {path: '', component: MainPageComponent},
   // {path: 'about', component: ProfileComponent},
-  {path: 'login', component: LoginComponent},
+  // {path: 'login', component: LoginComponent},
   {path: ':user', component: ProfileComponent},
   {path: ':profile/p/:dream', component: PostsComponent}
 ];
