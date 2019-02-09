@@ -17,7 +17,6 @@
   margin-bottom: 10px;
   position: relative;
   padding-right: 20px !important;
-  cursor: pointer;
 }
 p {
   padding: 0 0 5px;
@@ -28,6 +27,13 @@ p {
 p.author,
 .time {
   font-size: 12px;
+}
+.posts:not(.onePost) .author:hover,
+.onePost .author:not(.title):hover,
+.cAuthor:hover {
+  color: #fffeae;
+  cursor: pointer;
+  text-decoration: underline;
 }
 .author.title {
   width: 100%;

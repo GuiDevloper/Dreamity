@@ -11,8 +11,7 @@
   </form>
   <div class="grid grid-pad">
     <div class="post c-7o12 m-1o1" *ngFor="let dream of dreams;
-      let i = index" [ngStyle]="{ opacity: isNew(i) ? 0.9 : 1 }"
-      (click)="openPost(i)">
+      let i = index" [ngStyle]="{ opacity: isNew(i) ? 0.9 : 1 }">
       <div class="blur" [ngStyle]="{
         backgroundImage: 'url(' + post.imgs[dream.img] + ')'
       }">
@@ -34,13 +33,17 @@
             (change)="coment.updateLvl(id)">
         </div>
         <img class="avatar" *ngIf="isDream && profile" [src]="profile.img">
-        <p *ngIf="isDream" class="author img">
+        <p *ngIf="isDream" class="author img"
+          (click)="user.goTo('/' +getAuthor(i))">
           {{ getAuthor(i) }}:
         </p>
-        <p *ngIf="!isDream" class="author">{{ parseTitle(i) }}</p>
+        <p *ngIf="!isDream" class="author"
+          (click)="user.goTo('/' +getAuthor(i))">{{ parseTitle(i) }}</p>
         <ng-container *ngIf="!isNew(i) && post.btnEdit !== 'Salvar';
           else postTxtA">
-          <p class="author title">{{ parseTitle(i, dream.title) }}</p>
+          <p class="author title" (click)="openPost(i)">
+            {{ parseTitle(i, dream.title) }}
+          </p>
           <p class="time">{{ dream.time }}</p>
           <p class="postText">{{ limitText(dream.text) }}</p>
         </ng-container>
@@ -75,7 +78,9 @@
           <ng-template #showCom>
             <div *ngFor="let com of (coment.show ? comments[1] : []);
                 let i = index" class="showCom">
-              <p> {{ com.author }}: </p>
+              <p class="cAuthor" (click)="user.goTo('/'+com.author)">
+                {{ com.author }}:
+              </p>
               <div>
                 <button [title]="coment.btnEdit[i] + ' Comentário'"
                   [value]="coment.btnEdit[i] || 'Editar'"
