@@ -7,13 +7,15 @@
 form {
   width: 60%;
   margin-left: 20%;
-  input {
-    margin: 0 15%;
-  }
-  button {
-    margin: 0 20%;
-  }
-  h4 {
-    margin: 2%;
-  }
+}
+
+input {
+  margin: 0 15%;
+}
+button {
+  margin: 0 20%;
+  width: auto;
+}
+h4 {
+  margin: 2%;
 }

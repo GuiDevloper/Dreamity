@@ -21,6 +21,9 @@
 p {
   padding: 0 0 5px;
 }
+button {
+  border-color: #cf574f;
+}
 .author {
   font-size: 1.1rem;
 }
@@ -29,7 +32,7 @@ p.author,
   font-size: 12px;
 }
 .posts:not(.onePost) .author:hover,
-.onePost .author:not(.title):hover,
+.onePost p.author:not(.title):hover,
 .cAuthor:hover {
   color: #fffeae;
   cursor: pointer;
@@ -80,7 +83,6 @@ p.author,
       text-decoration: underline;
     }
   }
-  .postText,
   .author.title,
   .time {
     min-width: auto;
@@ -96,7 +98,7 @@ p.author,
     text-align: justify;
     white-space: pre-line;
     height: auto;
-    padding: 15px 0 25px;
+    margin: 15px 0 25px 60px;
   }
   .comment {
     min-height: auto;
@@ -120,7 +122,6 @@ p.author,
       float: left;
       margin: 0;
     }
-    button,
     .comParagraf {
       font-size: 0.8rem;
     }
@@ -135,6 +136,8 @@ p.author,
     color: white;
     font-family: inherit;
     font-size: 1rem;
+    font-weight: 100;
+    width: auto;
   }
   form {
     width: 90%;
@@ -145,11 +148,6 @@ p.author,
       border: 0;
       background: transparent;
     }
-  }
-  button {
-    background: rgba(31, 31, 31, 0.4);
-    border: 1px solid #8c0000;
-    cursor: pointer;
   }
   .avatar {
     height: 120px;
@@ -268,7 +266,6 @@ textarea {
     margin-left: 0;
   }
 }
-
 @include for-phone {
   .posts {
     .grid {
