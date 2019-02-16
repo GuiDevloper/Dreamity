@@ -40,6 +40,7 @@ export class PostsComponent implements OnInit {
   Cdel: number;
   @Output() loaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   isLoad = false;
+  showLog: boolean;
 
   constructor(private post: PostService,
     private coment: CommentService,
@@ -61,6 +62,7 @@ export class PostsComponent implements OnInit {
         }
       }
     });
+    this.post.btnEdit = 'Editar';
     const paramMap = this.rtSnap.paramMap;
     // SE estiver em um sonho
     if (this.rtUrl[1] === 'p') {
@@ -249,6 +251,22 @@ export class PostsComponent implements OnInit {
   **/
   newBack(img: string): void {
     this.dreams[0]['img'] = img;
+  }
+
+  goto(url: string): void {
+    this.post.btnEdit = 'Editar';
+    this.user.goTo(url);
+  }
+
+  updateLvl(): void {
+    this.coment.updateLvl(this.id.toString())
+      .then(a => {
+        if (a) {
+          this.warModal = a;
+          this.showModal = true;
+          this.showLog = true;
+        }
+      });
   }
 
   editPost(): void {

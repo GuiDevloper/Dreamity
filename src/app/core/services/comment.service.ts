@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs';
 import { UserService } from './user.service';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -63,14 +64,18 @@ export class CommentService {
   /*
   * Atualiza lvl do sonho
   **/
-  updateLvl(id: string): void {
-    this.user.isLogged().subscribe(use => {
-      const name = this.user.getUser(use.uid)[0];
-      const newVal = {};
-      newVal[name] = this.lvl;
-      this.db.object(`comments/${id}/lvls`).update(newVal)
-        .catch(err => {
-          throw err;
+  updateLvl(id: string): Promise<any> {
+    return new Promise(resolve => {
+      this.user.isLogged().pipe(first()).subscribe(use => {
+        if (use) {
+          const name = this.user.getUser(use.uid)[0];
+          const newVal = {};
+          newVal[name] = this.lvl;
+          this.db.object(`comments/${id}/lvls`).update(newVal)
+            .catch(err => { throw err; });
+        } else {
+          resolve('Entre na sua conta para realizar esta ação');
+        }
       });
     });
   }

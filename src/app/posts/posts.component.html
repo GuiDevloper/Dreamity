@@ -30,15 +30,15 @@
             {{ progress }}
           </progress>
           <input type="range" min="0" max="20" [(ngModel)]="coment.lvl"
-            (change)="coment.updateLvl(id)">
+            (change)="updateLvl()">
         </div>
         <img class="avatar" *ngIf="isDream && profile" [src]="profile.img">
         <p *ngIf="isDream" class="author img"
-          (click)="user.goTo('/' +getAuthor(i))">
+          (click)="goto('/' +getAuthor(i))">
           {{ getAuthor(i) }}:
         </p>
         <p *ngIf="!isDream" class="author"
-          (click)="user.goTo('/' +getAuthor(i))">{{ parseTitle(i) }}</p>
+          (click)="goto('/' +getAuthor(i))">{{ parseTitle(i) }}</p>
         <ng-container *ngIf="!isNew(i) && post.btnEdit !== 'Salvar';
           else postTxtA">
           <p class="author title" (click)="openPost(i)">
@@ -48,7 +48,7 @@
           <p class="postText">{{ limitText(dream.text) }}</p>
         </ng-container>
         <ng-template #postTxtA>
-          <input type="text" class="author"
+          <input type="text" class="author title"
             [value]="parseTitle(i, dream.title)"
             placeholder="Entitule seu sonho"
             (input)="writeNew('title', $event)">
@@ -78,7 +78,7 @@
           <ng-template #showCom>
             <div *ngFor="let com of (coment.show ? comments[1] : []);
                 let i = index" class="showCom">
-              <p class="cAuthor" (click)="user.goTo('/'+com.author)">
+              <p class="cAuthor" (click)="goto('/'+com.author)">
                 {{ com.author }}:
               </p>
               <div>
@@ -113,6 +113,8 @@
     [display]="showModal"
     [warning]="warModal"
     (showH)="showModal = !showModal"
-    (DelC)="continueDelC()">
+    (DelC)="continueDelC()"
+    [showLogin]="showLog"
+    logType="login">
   </app-modal>
 </div>
