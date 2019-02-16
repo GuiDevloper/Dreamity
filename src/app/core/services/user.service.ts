@@ -76,8 +76,8 @@ export class UserService {
         const u: User = us.user;
         const uName = u.email.replace(/[@\W+\.~]/g, '').toLowerCase();
         const old = this.db.object(`/users/${u.uid}`);
-        old.valueChanges().pipe(first()).subscribe(v => {
-          if (v === null) {
+        old.valueChanges().pipe(first()).subscribe(oldUser => {
+          if (oldUser === null) {
             const newProfile = {
               username: uName,
               bio: 'Digite uma descrição mais completamente aqui',
@@ -85,8 +85,10 @@ export class UserService {
               img: u.photoURL
             };
             this.updateProfile(newProfile);
+            this.goTo('/' + uName);
+          } else {
+            this.goTo('/' + oldUser);
           }
-          this.goTo('/' + uName);
         });
       })
       .catch((err) => {
