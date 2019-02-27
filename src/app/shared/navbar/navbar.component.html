@@ -2,7 +2,7 @@
   <ul>
     <li routerLink="" routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }">Home</li>
-    <li routerLink="about" routerLinkActive="active">About</li>
+    <li routerLink="/about" routerLinkActive="active">About</li>
     <ng-container *ngIf="logado | async as logado; else showLogin">
       <li routerLink="/{{ logado }}" routerLinkActive="active">
         {{ logado }} Profile
