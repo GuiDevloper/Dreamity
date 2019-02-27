@@ -13,6 +13,7 @@ import { NavbarComponent, FooterComponent, ModalComponent, LoadingComponent } fr
 import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import { PostsComponent } from './posts/posts.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PostsComponent } from './posts/posts.component';
     LoginComponent,
     PostsComponent,
     ModalComponent,
-    LoadingComponent
+    LoadingComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
