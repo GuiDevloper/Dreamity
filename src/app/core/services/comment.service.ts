@@ -26,11 +26,31 @@ export class CommentService {
     return this.db.object(`comments/${id}`).valueChanges();
   }
 
-  create(path: string, value: Array<string>): void {
-    path = 'comments/' + path;
+  create(id: string, comment: string): Promise<any> {
+    return new Promise(resolve => {
+      return this.user.isLogged().pipe(first()).subscribe(use => {
+        if (use) {
+          const u = this.user.getUser(use.uid);
+          if (!u[1]) {
+            u[0].pipe(first()).subscribe(user => {
+              this.pushComent(id, user, comment);
+            });
+          } else {
+            this.pushComent(id, u[0], comment);
+          }
+          resolve(null);
+        } else {
+          resolve('Entre na sua conta para realizar esta ação');
+        }
+      });
+    });
+  }
+
+  pushComent(id: string, user: string, coment: string): void {
+    const path = 'comments/' + id;
     const newVal = {
-      author: value[0],
-      text: value[1]
+      author: user,
+      text: coment
     };
     this.db.list(path).push(newVal);
   }
@@ -73,6 +93,7 @@ export class CommentService {
           newVal[name] = this.lvl;
           this.db.object(`comments/${id}/lvls`).update(newVal)
             .catch(err => { throw err; });
+          resolve(null);
         } else {
           resolve('Entre na sua conta para realizar esta ação');
         }

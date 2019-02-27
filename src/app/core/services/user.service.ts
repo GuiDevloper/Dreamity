@@ -68,7 +68,7 @@ export class UserService {
   /*
   * Autentica usando determinado provedor
   **/
-  logWith(prov: string): Promise<void> {
+  logWith(prov: string, isPost: boolean): Promise<void> {
     const provider = prov === 'git' ?
       new auth.GithubAuthProvider() : null;
     return this.ngAuth.auth.signInWithPopup(provider)
@@ -85,9 +85,9 @@ export class UserService {
               img: u.photoURL
             };
             this.updateProfile(newProfile);
-            this.goTo('/' + uName);
+            !isPost ? this.goTo('/' + uName) : '';
           } else {
-            this.goTo('/' + oldUser);
+            !isPost ? this.goTo('/' + oldUser) : '';
           }
         });
       })
