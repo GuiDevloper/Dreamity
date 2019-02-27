@@ -1,6 +1,8 @@
 <div class="modal" *ngIf="display">
   <div class="content">
-    <app-login *ngIf="showLogin" [logType]="logType"></app-login>
+    <app-login *ngIf="showLogin"
+      [logType]="logType"
+      (logPost)="upLvl.emit()"></app-login>
     <form *ngIf="warning">
       <p> {{ warning }} </p>
       <ng-container *ngIf="warning.includes('Tens')">

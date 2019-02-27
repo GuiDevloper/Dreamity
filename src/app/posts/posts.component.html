@@ -112,9 +112,10 @@
   <app-modal
     [display]="showModal"
     [warning]="warModal"
-    (showH)="showModal = !showModal"
+    (showH)="resetModal()"
     (DelC)="continueDelC()"
     [showLogin]="showLog"
-    logType="login">
+    logType="loginPost"
+    (upLvl)="progress !== coment.lvl ? updateLvl() : onComment()">
   </app-modal>
 </div>

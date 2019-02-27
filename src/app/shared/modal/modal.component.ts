@@ -13,6 +13,7 @@ export class ModalComponent implements OnInit {
 
   @Output() showH: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() DelC: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() upLvl: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }
 

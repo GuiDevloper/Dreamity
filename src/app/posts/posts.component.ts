@@ -223,7 +223,18 @@ export class PostsComponent implements OnInit {
   **/
   onComment(): void {
     // usa id do post
-    this.coment.create(this.id.toString(), [this.User, this.comment]);
+    this.coment.create(this.id.toString(), this.comment)
+      .then(error => {
+        if (error) {
+          this.warModal = error;
+          this.showModal = true;
+          this.showLog = true;
+        } else {
+          this.warModal = '';
+          this.showModal = false;
+          this.comment = '';
+        }
+      });
   }
 
   /*
@@ -260,11 +271,14 @@ export class PostsComponent implements OnInit {
 
   updateLvl(): void {
     this.coment.updateLvl(this.id.toString())
-      .then(a => {
-        if (a) {
-          this.warModal = a;
+      .then(error => {
+        if (error) {
+          this.warModal = error;
           this.showModal = true;
           this.showLog = true;
+        } else {
+          this.warModal = '';
+          this.showModal = false;
         }
       });
   }
@@ -277,6 +291,7 @@ export class PostsComponent implements OnInit {
   }
 
   delPost(): void {
+    this.showLog = false;
     this.warModal = 'Tens a real certeza apagando este sonho?';
     this.showModal = true;
   }
@@ -299,6 +314,7 @@ export class PostsComponent implements OnInit {
   * @param i = index do comentario
   **/
   delCom(i: number): void {
+    this.showLog = false;
     this.warModal = 'Tens a real certeza apagando este comentário?';
     this.showModal = true;
     this.Cdel = i;
@@ -311,6 +327,11 @@ export class PostsComponent implements OnInit {
         setTimeout(() => this.showModal = false, 3000);
       })
       .catch(err => this.warModal = err);
+  }
+
+  resetModal(): void {
+    this.showModal = !this.showModal;
+    this.coment.lvl = this.progress;
   }
 
 }
