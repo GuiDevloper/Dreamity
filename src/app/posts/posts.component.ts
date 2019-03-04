@@ -43,7 +43,7 @@ export class PostsComponent implements OnInit {
   showLog: boolean;
 
   constructor(private post: PostService,
-    private coment: CommentService,
+    public coment: CommentService,
     private route: ActivatedRoute,
     private user: UserService) { }
 

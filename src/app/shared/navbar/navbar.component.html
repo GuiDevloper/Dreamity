@@ -5,7 +5,7 @@
     <li routerLink="/about" routerLinkActive="active">About</li>
     <ng-container *ngIf="logado | async as logado; else showLogin">
       <li routerLink="/{{ logado }}" routerLinkActive="active">
-        {{ logado }} Profile
+        {{ logado }}
       </li>
       <li (click)="user.Logout()" routerLinkActive="active">
         Log out

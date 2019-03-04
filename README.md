@@ -32,7 +32,7 @@ com outras mentes.
 
 ## Missão
 
-A missão é principalmente oferecer uma forma de pessoas compartilharem o que tem sonhado, 
+A missão é principalmente oferecer uma forma de pessoas compartilharem o que tem sonhado,<br>
 dormindo ou não.<br>
 O sonhador cria sua conta e customizará seu perfil.<br>
 Após isso, pode escrever seus sonhos em estilo de post, podendo adicionar imagem de fundo.<br>
