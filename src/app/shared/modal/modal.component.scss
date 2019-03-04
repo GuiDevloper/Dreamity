@@ -10,6 +10,7 @@
 .content {
   width: 40%;
   height: auto;
+  min-height: 35%;
   max-height: 50%;
   margin-left: 30%;
   overflow: auto;
@@ -35,4 +36,20 @@ button {
 }
 .btnN {
   margin-left: 43%;
+}
+
+@import '../../shared/CSS/breakpoints';
+
+@include for-phone-tablet {
+  .content {
+    width: 70%;
+    margin-left: 15%;
+  }
+}
+
+@include for-phone {
+  .content {
+    width: 90%;
+    margin-left: 5%;
+  }
 }

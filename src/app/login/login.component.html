@@ -6,21 +6,24 @@
     {{ error.message }}
   </p>
   <form (ngSubmit)="isNewUser ? onSignUp() : onLoginEmail()">
+    <label *ngIf="isNewUser">Username</label>
     <input type="text" name="username" *ngIf="isNewUser"
       [(ngModel)]="username"
       placeholder="Digite username">
+    <label>Email</label>
     <input type="email" name="email"
       [(ngModel)]="email"
       placeholder="Digite email">
+    <label>Senha</label>
     <input type="password" name="password"
       [(ngModel)]="password"
       placeholder="Digite senha">
     <button type="submit" name="enter">
-      {{ isNewUser ? 'Sign In' : 'Log In' }}
+      {{ isNewUser ? 'Registrar' : 'Entrar' }}
     </button>
     <h4 (click)="isNewUser = !isNewUser">
-      {{ isNewUser ? 'Already have an Account? >> Log In' :
-        'Not have any Account yet? >> Register' }}
+      {{ isNewUser ? 'Já tem uma conta? >> Entrar' :
+        'Não tem conta ainda? >> Registrar' }}
     </h4>
   </form>
   <button (click)="login('git')">Entrar com GitHub</button>
