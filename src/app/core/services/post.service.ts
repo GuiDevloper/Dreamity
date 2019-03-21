@@ -12,9 +12,22 @@ export class PostService {
   title: string;
   text: string;
   imgs: Array<string> = [
-    'https://i.pinimg.com/564x/26/94/f8/2694f861b9e3fa5cf6f3f4a6bb19f7b5.jpg',
-    'https://i.pinimg.com/564x/82/42/c6/8242c639e3e45cf791d061074b562954.jpg',
-    'https://i.pinimg.com/564x/fd/b4/23/fdb4234977b0c09e9f078e6025fc1c94.jpg'
+    // Neon asian car & womans
+    'https://i.pinimg.com/564x/80/7a/8e/807a8e5dcf9f9d271c6169dde744fdc7.jpg',
+    // 'What you lookin' at?'
+    'https://i.pinimg.com/564x/e4/bf/d1/e4bfd1a215db2597e0e4bbb5b50eee6e.jpg',
+    // Pink neon, car in night, japan letters
+    'https://i.pinimg.com/564x/80/4a/4f/804a4fba590dd8b2bbd07d18874e7f26.jpg',
+    // Rocket neon & planets
+    'https://i.pinimg.com/564x/ba/b8/41/bab8416853a41c124d3e676c3235b9e3.jpg',
+    // Corridor at star night
+    'https://i.pinimg.com/564x/e9/ca/ec/e9caec56baa056999d6640d2f5bf1bc1.jpg',
+    // Skyscrapers w/ 'night' neon
+    'https://i.pinimg.com/564x/bb/62/5d/bb625da66ba6d72de6179da368c0d92f.jpg',
+    // Palm tree w/ moon behind
+    'https://i.pinimg.com/originals/fd/dd/b3/fdddb3aeec85d379258cf73246d667fd.gif',
+    // Sea infinite above & below
+    'https://i.pinimg.com/originals/a5/44/37/a54437ac46138cc2cca8da78ed0cba29.gif'
   ];
   btnEdit = 'Editar';
 

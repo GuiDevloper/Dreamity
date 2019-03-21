@@ -12,11 +12,11 @@
 #head {
   width: inherit;
   height: 70vh;
-  background: url(https://i.pinimg.com/564x/26/94/f8/2694f861b9e3fa5cf6f3f4a6bb19f7b5.jpg) center no-repeat;
+  background: url(https://i.pinimg.com/564x/f8/03/7a/f8037a275d9db985c77af4b4d9651539.jpg) center/cover no-repeat;
   position: fixed;
   background-size: cover;
-  -webkit-mask-image: linear-gradient(to bottom, #000000, rgba(0, 0, 0, 0) 85%);
-  mask-image: linear-gradient(to bottom, #000000, rgba(0, 0, 0, 0) 85%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.03) 75%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.03) 75%);
   p {
     padding: 2% 5%;
     color: rgb(255, 66, 66);

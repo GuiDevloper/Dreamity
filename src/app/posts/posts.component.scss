@@ -98,12 +98,14 @@ p.author,
     text-align: justify;
     white-space: pre-line;
     height: auto;
-    margin: 15px 0 25px 60px;
+    padding: 0;
+    min-height: 30%;
+    margin: 20px 0 25px 60px;
   }
   .comment {
     min-height: auto;
     width: 90%;
-    margin: 50px 0 0 60px;
+    margin-left: 60px;
   }
   .time {
     padding: 1px 0;
@@ -206,6 +208,7 @@ p.author,
 .text {
   position: relative;
   background: rgba(66, 13, 13, 0.75);
+  background: rgba(13, 22, 66, 0.75);
   border-radius: inherit;
   box-shadow: 5px 5px rgba(17, 17, 17, 0.8);
   height: inherit;
