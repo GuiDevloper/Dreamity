@@ -294,6 +294,7 @@ export class PostsComponent implements OnInit {
     this.showLog = false;
     this.warModal = 'Tens a real certeza apagando este sonho?';
     this.showModal = true;
+    this.Cdel = null;
   }
 
   continueDelP(): void {
@@ -327,6 +328,7 @@ export class PostsComponent implements OnInit {
         setTimeout(() => this.showModal = false, 3000);
       })
       .catch(err => this.warModal = err);
+    this.Cdel = null;
   }
 
   resetModal(): void {

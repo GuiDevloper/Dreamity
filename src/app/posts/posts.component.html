@@ -113,7 +113,7 @@
     [display]="showModal"
     [warning]="warModal"
     (showH)="resetModal()"
-    (DelC)="continueDelC()"
+    (DelC)="Cdel !== null ? continueDelC() : continueDelP()"
     [showLogin]="showLog"
     logType="loginPost"
     (upLvl)="progress !== coment.lvl ? updateLvl() : onComment()">

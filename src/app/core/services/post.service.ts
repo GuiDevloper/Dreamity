@@ -53,10 +53,11 @@ export class PostService {
   }
 
   update(user: string, id, newDream: object): void {
+    this.coment.show = false;
     if (this.btnEdit === 'Editar') {
       this.btnEdit = 'Salvar';
+      this.coment.show = true;
     } else {
-      this.coment.show = false;
       const newValues = {
         title: this.title || newDream['title'],
         text: this.text || newDream['text']
@@ -76,6 +77,7 @@ export class PostService {
   }
 
   delete(user: string, id: string): Promise<void> {
+    this.coment.delete(id, '');
     return this.db.object(`posts/${user}/${id}/`).remove()
       .catch(err => {
         throw err;
