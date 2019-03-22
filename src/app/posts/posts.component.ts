@@ -105,7 +105,8 @@ export class PostsComponent implements OnInit {
       }
       if (this.isDream) {
         // index do sonho
-        const iDream = this.rtSnap.paramMap.get('dream');
+        let iDream = +this.rtSnap.paramMap.get('dream');
+        iDream = this.dreams.length - (++iDream);
         // especifica dados para este sonho apenas
         this.id = this.id[iDream];
         this.dreams = [this.dreams[iDream]];
@@ -134,7 +135,9 @@ export class PostsComponent implements OnInit {
   * comm = comentários deste post
   **/
   storeLvls(comm: object) {
-    comm = comm || {lvls: {guidevloper: 10}};
+    const defLvls = {guidevloper: 10};
+    comm = comm || { lvls: defLvls };
+    comm['lvls'] = comm['lvls'] ? comm['lvls'] : defLvls;
     const lvlLen = this.coment.hasLvls(comm);
     let len = 0;
     // SE tem lvls e tamanho > 0
@@ -144,7 +147,7 @@ export class PostsComponent implements OnInit {
     } else {
       len = +lvlLen[1];
     }
-    this.coment.lvl = comm['lvls'][this.profile.username];
+    this.coment.lvl = comm['lvls'][this.profile.username] || 10;
     this.comments = [
       Object.keys(comm).slice(0, len),
       Object.values(comm).slice(0, len)
@@ -239,11 +242,20 @@ export class PostsComponent implements OnInit {
 
   /*
   * Abre sonho
-  * @param path = index do sonho
+  * @param i = index do sonho
   **/
-  openPost(path: string): void {
-    if (!this.isDream && !this.isNew(+path)) {
-      path = `${this.author[0]}/p/${path}`;
+  openPost(i: number): void {
+    if (!this.isDream && !this.isNew(+i)) {
+      const post = this.dreams[i];
+      let id = -1, len;
+      for (const dream of this.dreams) {
+        if (dream['author'] === post['author']) {
+          id++;
+          if (dream === post) { len = id; }
+        }
+      }
+      id = id - len;
+      const path = `${post['author']}/p/${id}`;
       this.user.goTo(path);
     }
   }
