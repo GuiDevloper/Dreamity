@@ -9,8 +9,8 @@ import { CommentService } from './comment.service';
 export class PostService {
   posts: any;
   // Dados do sonho postado
-  title: string;
-  text: string;
+  title = '';
+  text = '';
   imgs: Array<string> = [
     // Neon asian car & womans
     'https://i.pinimg.com/564x/80/7a/8e/807a8e5dcf9f9d271c6169dde744fdc7.jpg',
@@ -42,37 +42,52 @@ export class PostService {
     return this.db.object(`posts/${usua}`).valueChanges();
   }
 
-  create(user: string, value: Array<object>): void {
-    const newVal = {
-      title: this.title,
-      text: this.text,
-      img: value[0]['img'],
-      time: new Date().getTime()
-    };
-    this.db.list(`/posts/${user}`).push(newVal);
+  create(user: string, value: Array<object>): Promise<any> {
+    return new Promise(resolve => {
+      const newVal = {
+        title: this.title.trim(),
+        text: this.text.trim(),
+        img: value[0]['img'],
+        time: new Date().getTime()
+      };
+      if (newVal.title !== '' && newVal.text !== '' && newVal.img) {
+        return this.db.list(`/posts/${user}`).push(newVal)
+          .then(() => resolve(null));
+      } else {
+        resolve('Digitou o seu sonho todo e escolheu o fundo?');
+      }
+    });
   }
 
-  update(user: string, id, newDream: object): void {
+  update(user: string, id, newDream: object): any | Promise<any> {
     this.coment.show = false;
     if (this.btnEdit === 'Editar') {
       this.btnEdit = 'Salvar';
       this.coment.show = true;
+      return null;
     } else {
-      const newValues = {
-        title: this.title || newDream['title'],
-        text: this.text || newDream['text']
-      };
-      this.db.object(`posts/${user}/${id}/`).update(newValues)
-        .then(() => {
-          this.btnEdit = 'Editar';
-          if (!(this.title && this.text)) {
-            console.log('Alguns dados mantidos');
-          }
-          this.coment.show = true;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return new Promise(resolve => {
+        const title = this.title, txt = this.text;
+        const newVal = {
+          title: title || newDream['title'],
+          text: txt || newDream['text']
+        };
+        this.db.object(`posts/${user}/${id}/`).update(newVal)
+          .then(() => {
+            this.btnEdit = 'Editar';
+            if (!(title && txt)) {
+              const empT = title ? '' : 'Título';
+              let empTxt = empT ? ' e texto do Sonho' : 'Texto do Sonho';
+              empTxt = txt ? empT : empT + empTxt;
+              resolve(`${empTxt} mantido${!title && !txt ? 's' : ''}`);
+            } else {
+              resolve(null);
+            }
+          })
+          .catch(err => {
+            resolve(err);
+          });
+      });
     }
   }
 

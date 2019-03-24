@@ -30,15 +30,19 @@ export class CommentService {
     return new Promise(resolve => {
       return this.user.isLogged().pipe(first()).subscribe(use => {
         if (use) {
-          const u = this.user.getUser(use.uid);
-          if (!u[1]) {
-            u[0].pipe(first()).subscribe(user => {
-              this.pushComent(id, user, comment);
-            });
-          } else {
-            this.pushComent(id, u[0], comment);
+          const error = comment.length === 0 ?
+            'Ops, digite algo gentil' : null;
+          if (!error) {
+            const u = this.user.getUser(use.uid);
+            if (!u[1]) {
+              u[0].pipe(first()).subscribe(user => {
+                this.pushComent(id, user, comment);
+              });
+            } else {
+              this.pushComent(id, u[0], comment);
+            }
           }
-          resolve(null);
+          resolve(error);
         } else {
           resolve('Entre na sua conta para realizar esta ação');
         }
@@ -55,29 +59,27 @@ export class CommentService {
     this.db.list(path).push(newVal);
   }
 
-  update(id: string, i: number, oldComents: object): void {
+  update(id: string, i: number, oldComents: object): any | Promise<any> {
     if (!this.btnEdit[i]) {
       this.btnEdit[i] = 'Editar';
     }
     if (this.btnEdit[i] === 'Editar') {
       this.btnEdit[i] = 'Salvar';
     } else {
-      const comentId = oldComents[0][i];
-      const newValue = {
-        text: this.edited || oldComents[1][i].text
-      };
-      this.db.object(`comments/${id}/${comentId}`).update(newValue)
-        .then(() => {
-          if (this.edited) {
-            console.log('Comentario editado');
-          } else {
-            console.log('Comentario mantido');
-          }
-        })
-        .catch(err => {
-          throw err;
-        });
-      this.btnEdit[i] = 'Editar';
+      return new Promise(resolve => {
+        const comentId = oldComents[0][i];
+        const newValue = {
+          text: this.edited || oldComents[1][i].text
+        };
+        this.db.object(`comments/${id}/${comentId}`).update(newValue)
+          .then(() => {
+            this.btnEdit[i] = 'Editar';
+            resolve('Comentário ' + (this.edited ? 'editado' : 'mantido'));
+          })
+          .catch(err => {
+            resolve(err);
+          });
+      });
     }
   }
 
