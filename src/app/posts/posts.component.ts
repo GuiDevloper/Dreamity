@@ -17,7 +17,7 @@ export class PostsComponent implements OnInit {
   dreams: Array<object>;
 
   // novo coment
-  comment: string;
+  comment = '';
   // usuário logado
   User: string = null;
   // todos autores dos posts
@@ -111,19 +111,21 @@ export class PostsComponent implements OnInit {
         this.id = this.id[iDream];
         this.dreams = [this.dreams[iDream]];
         this.post.restart(this.dreams);
-        this.comments[iDream].subscribe(com => {
-          this.isLoad = true;
-          const pro = this.user.getProfile(userUrl);
-          if (!pro[1]) {
-            pro[0].subscribe(prof => {
-              this.profile = prof;
+        if (this.comments[iDream]) {
+          this.comments[iDream].subscribe(com => {
+            this.isLoad = true;
+            const pro = this.user.getProfile(userUrl);
+            if (!pro[1]) {
+              pro[0].subscribe(prof => {
+                this.profile = prof;
+                this.storeLvls(com);
+              });
+            } else {
+              this.profile = pro[0];
               this.storeLvls(com);
-            });
-          } else {
-            this.profile = pro[0];
-            this.storeLvls(com);
-          }
-        });
+            }
+          });
+        }
       } else {
         this.loaded.emit();
       }
@@ -200,12 +202,12 @@ export class PostsComponent implements OnInit {
   * Posta sonho em nome de user logado
   **/
   onPost(): void {
-    if (this.post.title && this.post.text) {
-      this.newPost = null;
-      this.post.create(this.User, this.dreams);
-    } else {
-      console.log('Preencha todos os campos');
-    }
+    this.post.create(this.User, this.dreams).then(error => {
+      this.warnUser(error);
+      if (!error) {
+        this.newPost = null;
+      }
+    })
   }
 
   /*
@@ -226,15 +228,10 @@ export class PostsComponent implements OnInit {
   **/
   onComment(): void {
     // usa id do post
-    this.coment.create(this.id.toString(), this.comment)
+    this.coment.create(this.id.toString(), this.comment.trim())
       .then(error => {
-        if (error) {
-          this.warModal = error;
-          this.showModal = true;
-          this.showLog = true;
-        } else {
-          this.warModal = '';
-          this.showModal = false;
+        this.warnUser(error, false, (error || '').includes('Entre'));
+        if (!error) {
           this.comment = '';
         }
       });
@@ -283,43 +280,42 @@ export class PostsComponent implements OnInit {
 
   updateLvl(): void {
     this.coment.updateLvl(this.id.toString())
-      .then(error => {
-        if (error) {
-          this.warModal = error;
-          this.showModal = true;
-          this.showLog = true;
-        } else {
-          this.warModal = '';
-          this.showModal = false;
-        }
-      });
+      .then(error => this.warnUser(error, false, true));
   }
 
   editPost(): void {
-    this.post.update(this.User, this.id, this.dreams[0]);
+    const isPromise = this.post.update(this.User, this.id, this.dreams[0]);
+    if (isPromise) {
+      isPromise.then(error => {
+        this.coment.show = true;
+        this.warnUser(error, true);
+      });
+    }
     /* ativar em produção
     console.log(this.comments[1]);
     console.clear();*/
   }
 
   delPost(): void {
-    this.showLog = false;
-    this.warModal = 'Tens a real certeza apagando este sonho?';
-    this.showModal = true;
+    const error = 'Tens a real certeza apagando este sonho?'
+    this.warnUser(error, false, false);
     this.Cdel = null;
   }
 
   continueDelP(): void {
     this.post.delete(this.User, this.id.toString())
       .then(() => {
-        this.warModal = 'Sonho removido daqui';
+        this.warnUser('Sonho removido daqui');
         setTimeout(() => this.user.goTo(''), 3000);
       })
       .catch(err => this.warModal = err);
   }
 
   editCom(i: number): void {
-    this.coment.update(this.id.toString(), i, this.comments);
+    const isPromise = this.coment.update(this.id.toString(), i, this.comments);
+    if (isPromise) {
+      isPromise.then(error => this.warnUser(error));
+    }
   }
 
   /*
@@ -327,18 +323,14 @@ export class PostsComponent implements OnInit {
   * @param i = index do comentario
   **/
   delCom(i: number): void {
-    this.showLog = false;
-    this.warModal = 'Tens a real certeza apagando este comentário?';
-    this.showModal = true;
+    const error = 'Tens a real certeza apagando este comentário?';
+    this.warnUser(error, false, false);
     this.Cdel = i;
   }
 
   continueDelC(): void {
     this.coment.delete(this.id.toString(), this.comments[0][this.Cdel])
-      .then(() => {
-        this.warModal = 'Comentário removido';
-        setTimeout(() => this.showModal = false, 3000);
-      })
+      .then(() => this.warnUser('Comentário removido', true))
       .catch(err => this.warModal = err);
     this.Cdel = null;
   }
@@ -346,6 +338,18 @@ export class PostsComponent implements OnInit {
   resetModal(): void {
     this.showModal = !this.showModal;
     this.coment.lvl = this.progress;
+  }
+
+  warnUser(warn: string, time?: boolean, log?: boolean): void {
+    this.warModal = warn || '';
+    this.showModal = warn !== null;
+    this.showLog = warn && log;
+    if (warn && time) {
+      setTimeout(() => {
+        this.warModal = '';
+        this.showModal = false;
+      }, 3000);
+    }
   }
 
 }

@@ -13,10 +13,10 @@
     <div class="post c-7o12 m-1o1" *ngFor="let dream of dreams;
       let i = index" [ngStyle]="{ opacity: isNew(i) ? 0.9 : 1 }">
       <div class="blur" [ngStyle]="{
-        backgroundImage: 'url(' + post.imgs[dream.img] + ')'
+        backgroundImage: 'url(' + post.imgs[dream?.img] + ')'
       }">
       </div>
-      <div class="text">
+      <div class="text" *ngIf="dream">
         <ng-container *ngIf="isDream && User === getAuthor(0)">
           <button [title]="post.btnEdit + ' Post'" (click)="editPost()">
             {{ post.btnEdit }}
@@ -66,7 +66,7 @@
               Limpar
             </button>
             <button type="submit" name="enter" title="Cadastrar Novo Comentário">
-              Cadastrar
+              Comentar
             </button>
           </form>
           <p *ngIf="!isDream; else showCom">
