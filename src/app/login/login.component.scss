@@ -33,6 +33,12 @@ button {
 h4 {
   margin: 2%;
   font-size: 0.9rem;
+  cursor: pointer;
+}
+.error {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: #8a0000;
 }
 
 @import "../shared/CSS/breakpoints";

@@ -1,27 +1,24 @@
 <div class="login">
-  <p *ngIf="errorMessage.length > 0">
+  <p *ngIf="errorMessage.length > 0" class="error">
     {{ errorMessage }}
-  </p>
-  <p *ngIf="error.message.length > 0">
-    {{ error.message }}
   </p>
   <form (ngSubmit)="isNewUser ? onSignUp() : onLoginEmail()">
     <label *ngIf="isNewUser">Username</label>
     <input type="text" name="username" *ngIf="isNewUser"
-      [(ngModel)]="username"
+      [(ngModel)]="acc.username"
       placeholder="Digite username">
     <label>Email</label>
     <input type="email" name="email"
-      [(ngModel)]="email"
+      [(ngModel)]="acc.email"
       placeholder="Digite email">
     <label>Senha</label>
     <input type="password" name="password"
-      [(ngModel)]="password"
+      [(ngModel)]="acc.password"
       placeholder="Digite senha">
     <button type="submit" name="enter">
       {{ isNewUser ? 'Registrar' : 'Entrar' }}
     </button>
-    <h4 (click)="isNewUser = !isNewUser">
+    <h4 (click)="turnNew()">
       {{ isNewUser ? 'Já tem uma conta? >> Entrar' :
         'Não tem conta ainda? >> Registrar' }}
     </h4>

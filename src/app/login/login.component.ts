@@ -1,8 +1,7 @@
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable } from 'rxjs';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { User, UserService } from '../core';
+import { UserService } from '../core';
 
 @Component({
   selector: 'app-login',
@@ -10,16 +9,14 @@ import { User, UserService } from '../core';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  User;
-  users: Observable<any>;
   @Input() logType: string;
 
   isNewUser = false;
-  username = '';
-  email = '';
-  password = '';
+  acc = {
+    username: '',
+    email: '',
+    password: '' };
   errorMessage = '';
-  error: { name: string, message: string } = { name: '', message: '' };
   @Output() logPost: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(public user: UserService,
@@ -30,8 +27,13 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginEmail(): void {
-    this.clearErrorMessage();
-    this.ngAuth.auth.signInWithEmailAndPassword(this.email, this.password)
+    this.errorMessage = '';
+    let acc = this.acc;
+    acc = {
+      email: acc.email.trim(),
+      password: acc.password.trim(), username: '' };
+    if (acc.email.length > 0 && acc.password.length > 0) {
+      this.ngAuth.auth.signInWithEmailAndPassword(acc.email, acc.password)
       .then(a => {
         if (!this.logType.includes('Post')) {
           const u = this.user.getUser(a.user.uid);
@@ -45,29 +47,44 @@ export class LoginComponent implements OnInit {
         }
       })
       .catch(err => {
-        this.error = err;
+        this.errorMessage = err.message;
       });
+    } else {
+      this.errorMessage = 'Preencha todos os campos';
+    }
   }
 
   onSignUp(): void {
-    this.clearErrorMessage();
-    this.ngAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
+    this.errorMessage = '';
+    let acc = this.acc;
+    acc = {
+      email: acc.email.trim(),
+      password: acc.password.trim(),
+      username: acc.username.trim() };
+    if (acc.email.length > 0 &&
+      acc.password.length > 0 &&
+      acc.username.length) {
+    this.ngAuth.auth.createUserWithEmailAndPassword(acc.email, acc.password)
       .then(newUser => {
-        this.user.create(newUser.user.uid, this.username)
+        this.user.create(newUser.user.uid, acc.username)
         .then(() => {
           if (!this.logType.includes('Post')) {
-            this.user.goTo(`/${this.username}`);
+            this.user.goTo(`/${acc.username}`);
           } else {
             this.logPost.emit();
           }
         });
       })
       .catch(err => {
-        this.error = err;
+        this.errorMessage = err.message;
       });
+    } else {
+      this.errorMessage = 'Preencha todos os campos';
+    }
   }
 
   login(prov): void {
+    this.errorMessage = '';
     this.user.logWith(prov, this.logType.includes('Post'))
       .then(() => {
         if (this.logType.includes('Post')) {
@@ -79,8 +96,8 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  clearErrorMessage(): void {
+  turnNew(): void {
+    this.isNewUser = !this.isNewUser;
     this.errorMessage = '';
-    this.error = { name: '', message: '' };
   }
 }
