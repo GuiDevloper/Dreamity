@@ -45,12 +45,12 @@ export class PostService {
   create(user: string, value: Array<object>): Promise<any> {
     return new Promise(resolve => {
       const newVal = {
-        title: this.title.trim(),
-        text: this.text.trim(),
+        title: (this.title || '').trim(),
+        text: (this.text || '').trim(),
         img: value[0]['img'],
         time: new Date().getTime()
       };
-      if (newVal.title !== '' && newVal.text !== '' && newVal.img) {
+      if (newVal.title.length > 0 && newVal.text.length > 0 && newVal.img) {
         return this.db.list(`/posts/${user}`).push(newVal)
           .then(() => resolve(null));
       } else {

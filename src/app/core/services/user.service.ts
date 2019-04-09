@@ -127,7 +127,7 @@ export class UserService {
 
   Logout(): void {
     this.ngAuth.auth.signOut()
-      .then(() => this.goTo(''));
+      .then(() => this.goTo('about').then(() => this.goTo('')));
   }
 
   handleError(error: string): void {
