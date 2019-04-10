@@ -106,25 +106,29 @@ export class PostsComponent implements OnInit {
       if (this.isDream) {
         // index do sonho
         let iDream = +this.rtSnap.paramMap.get('dream');
-        iDream = this.dreams.length - (++iDream);
-        // especifica dados para este sonho apenas
-        this.id = this.id[iDream];
-        this.dreams = [this.dreams[iDream]];
-        this.post.restart(this.dreams);
-        if (this.comments[iDream]) {
-          this.comments[iDream].subscribe(com => {
-            this.isLoad = true;
-            const pro = this.user.getProfile(userUrl);
-            if (!pro[1]) {
-              pro[0].subscribe(prof => {
-                this.profile = prof;
+        iDream = iDream === 0 ? -1 : this.dreams.length - (iDream);
+        if (iDream < 0) {
+          this.user.goTo('/no/where');
+        } else {
+          // especifica dados para este sonho apenas
+          this.id = this.id[iDream];
+          this.dreams = [this.dreams[iDream]];
+          this.post.restart(this.dreams);
+          if (this.comments[iDream]) {
+            this.comments[iDream].subscribe(com => {
+              this.isLoad = true;
+              const pro = this.user.getProfile(userUrl);
+              if (!pro[1]) {
+                pro[0].subscribe(prof => {
+                  this.profile = prof;
+                  this.storeLvls(com);
+                });
+              } else {
+                this.profile = pro[0];
                 this.storeLvls(com);
-              });
-            } else {
-              this.profile = pro[0];
-              this.storeLvls(com);
-            }
-          });
+              }
+            });
+          }
         }
       } else {
         this.loaded.emit();
@@ -216,7 +220,12 @@ export class PostsComponent implements OnInit {
   * @param evt = evento disparado no input
   **/
   writeNew(input?: string, evt?): void {
-    this.post[input] = evt ? evt.target.value : '';
+    if (input) {
+      this.post[input] = evt ? evt.target.value : '';
+    } else {
+      this.post.title = '';
+      this.post.text = '';
+    }
     if (!this.isDream && this.newPost !== 0) {
       this.dreams.unshift({title: '', text: '', img: 0});
       this.newPost = 0;
@@ -244,7 +253,7 @@ export class PostsComponent implements OnInit {
   openPost(i: number): void {
     if (!this.isDream && !this.isNew(+i)) {
       const post = this.dreams[i];
-      let id = -1, len;
+      let id = 0, len;
       for (const dream of this.dreams) {
         if (dream['author'] === post['author']) {
           id++;
@@ -252,7 +261,7 @@ export class PostsComponent implements OnInit {
         }
       }
       id = id - len;
-      const path = `${post['author']}/p/${id}`;
+      const path = `${post['author']}/p/${id + 1}`;
       this.user.goTo(path);
     }
   }

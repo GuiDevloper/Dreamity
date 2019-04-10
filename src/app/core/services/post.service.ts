@@ -50,7 +50,9 @@ export class PostService {
         img: value[0]['img'],
         time: new Date().getTime()
       };
-      if (newVal.title.length > 0 && newVal.text.length > 0 && newVal.img) {
+      if (newVal.title.length > 0 &&
+        newVal.text.length > 0 &&
+        ('' + newVal.img).length > 0) {
         return this.db.list(`/posts/${user}`).push(newVal)
           .then(() => resolve(null));
       } else {
