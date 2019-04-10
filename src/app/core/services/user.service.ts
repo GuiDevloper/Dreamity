@@ -17,6 +17,12 @@ export class UserService {
   users: AngularFireList<{}>;
   user: string;
   profile: Profile;
+  newProfile: Profile = {
+    username: '',
+    bio: 'Digite uma descrição mais completamente aqui',
+    description: 'Digite aqui uma descrição de uma linha',
+    img: ''
+  };
 
   constructor(public ngAuth: AngularFireAuth,
     private ngZone: NgZone,
@@ -53,13 +59,13 @@ export class UserService {
     }
   }
 
-  updateProfile(profile: Profile, old?: string): void {
+  updateProfile(profile: Profile, old?: string): Promise<any> {
     const profs = this.db.list(`/profiles/`);
     this.update(profile.username);
-    profs.update(profile.username, profile).then(() => {
-      this.goTo('')
-        .then(() => this.goTo('/' + profile.username));
+    return profs.update(profile.username, profile).then(() => {
       if (old && old !== profile.username) {
+        this.goTo('')
+          .then(() => this.goTo('/' + profile.username));
         profs.remove(old);
       }
     });
@@ -78,13 +84,9 @@ export class UserService {
         const old = this.db.object(`/users/${u.uid}`);
         old.valueChanges().pipe(first()).subscribe(oldUser => {
           if (oldUser === null) {
-            const newProfile = {
-              username: uName,
-              bio: 'Digite uma descrição mais completamente aqui',
-              description: 'Digite aqui uma descrição de uma linha',
-              img: u.photoURL
-            };
-            this.updateProfile(newProfile);
+            this.newProfile.username = uName;
+            this.newProfile.img = u.photoURL;
+            this.updateProfile(this.newProfile);
             !isPost ? this.goTo('/' + uName) : '';
           } else {
             !isPost ? this.goTo('/' + oldUser) : '';
@@ -106,14 +108,15 @@ export class UserService {
     });
   }
 
-  create(uid: string, username: string): Promise<void> {
-    const newUser = {};
-    newUser[uid] = username;
-    return this.users.update('/', newUser);
+  create(username: string): Promise<void> {
+    this.newProfile.img = '';
+    this.newProfile.username = username;
+    return this.updateProfile(this.newProfile);
   }
 
   userExist(username: string): any {
-    return this.db.list(`/profiles/${username.toLowerCase()}`).valueChanges().pipe(first()).toPromise();
+    return this.db.list(`/profiles/${username.toLowerCase()}`)
+      .valueChanges().pipe(first()).toPromise();
   }
 
   /*

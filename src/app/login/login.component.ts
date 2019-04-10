@@ -64,19 +64,25 @@ export class LoginComponent implements OnInit {
     if (acc.email.length > 0 &&
       acc.password.length > 0 &&
       acc.username.length) {
-    this.ngAuth.auth.createUserWithEmailAndPassword(acc.email, acc.password)
-      .then(newUser => {
-        this.user.create(newUser.user.uid, acc.username)
-        .then(() => {
-          if (!this.logType.includes('Post')) {
-            this.user.goTo(`/${acc.username}`);
-          } else {
-            this.logPost.emit();
-          }
-        });
-      })
-      .catch(err => {
-        this.errorMessage = err.message;
+      this.user.userExist(acc.username).then(ex => {
+        if (ex.length === 0) {
+          this.ngAuth.auth
+            .createUserWithEmailAndPassword(acc.email, acc.password)
+            .then(() => {
+              this.user.create(acc.username).then(() => {
+                if (!this.logType.includes('Post')) {
+                  this.user.goTo(`/${acc.username}`);
+                } else {
+                  this.logPost.emit();
+                }
+              });
+            })
+            .catch(err => {
+              this.errorMessage = err.message;
+            });
+        } else {
+          this.errorMessage = 'Username already in use by another account.';
+        }
       });
     } else {
       this.errorMessage = 'Preencha todos os campos';
@@ -85,9 +91,10 @@ export class LoginComponent implements OnInit {
 
   login(prov): void {
     this.errorMessage = '';
-    this.user.logWith(prov, this.logType.includes('Post'))
+    const isPost = this.logType.includes('Post')
+    this.user.logWith(prov, isPost)
       .then(() => {
-        if (this.logType.includes('Post')) {
+        if (isPost) {
           this.logPost.emit();
         }
       })
