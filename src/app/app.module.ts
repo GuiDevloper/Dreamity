@@ -14,6 +14,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import { PostsComponent } from './posts/posts.component';
 import { AboutComponent } from './about/about.component';
+import { NowhereComponent } from './nowhere/nowhere.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AboutComponent } from './about/about.component';
     PostsComponent,
     ModalComponent,
     LoadingComponent,
-    AboutComponent
+    AboutComponent,
+    NowhereComponent
   ],
   imports: [
     BrowserModule,
