@@ -2,7 +2,9 @@
 <div id="background">
   <app-navbar></app-navbar>
   <div id="header" *ngIf="profile">
-    <img class="avatar" [src]="profile.img">
+    <img class="avatar" *ngIf="profile.img" [src]="profile.img">
+    <img class="avatar" *ngIf="!profile.img"
+      style="background: rgba(255, 255, 255, 0.1)">
     <div class="data">
       <!--Welcome to My World -->
       <ng-container *ngIf="!update; else ProfileTxtA">
@@ -14,13 +16,17 @@
         <input type="text" class="username"
           [ngClass]="{ invalid: inUser }"
           (input)="testUser()"
-          [(ngModel)]="profile.username">
+          [(ngModel)]="profile.username"
+          placeholder="Username">
         <input type="text" class="line-info"
-          [(ngModel)]="profile.description" maxlength="40">
-        <textarea class="bio" [(ngModel)]="profile.bio" maxlength="200">
+          [(ngModel)]="profile.description" maxlength="40"
+          placeholder="Line of info">
+        <textarea class="bio" [(ngModel)]="profile.bio"
+          maxlength="200" placeholder="Biography">
         </textarea>
         <input type="text" class="imgUrl"
-          [(ngModel)]="profile.img">
+          [(ngModel)]="profile.img"
+          placeholder="Avatar Image Url">
       </ng-template>
     </div>
     <ng-container *ngIf="myProfile">

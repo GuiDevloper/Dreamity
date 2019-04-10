@@ -32,7 +32,10 @@
           <input type="range" min="0" max="20" [(ngModel)]="coment.lvl"
             (change)="updateLvl()">
         </div>
-        <img class="avatar" *ngIf="isDream && profile" [src]="profile.img">
+        <img class="avatar" *ngIf="isDream && profile && profile.img"
+          [src]="profile.img">
+        <img class="avatar" *ngIf="isDream && profile && !profile.img"
+          style="background: rgba(255, 255, 255, 0.1)">
         <p *ngIf="isDream" class="author img"
           (click)="goto('/' +getAuthor(i))">
           {{ getAuthor(i) }}:
