@@ -1,4 +1,9 @@
 # Dreamity
+<p align="center">
+  <img width="540px" alt="Página inicial do Dreamity" src="https://raw.githubusercontent.com/GuiDevloper/Portfolio/master/src/assets/img/dreamity1.jpg">
+  <br><em> Página Inicial </em>
+</p>
+
 <details><summary><code>Click Here to Read English Explanation</code></summary>
 
 ## Idea
